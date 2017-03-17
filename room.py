@@ -373,3 +373,7 @@ def check_rooms():
     for room in Room.living_spaces:
         if room.num_of_occupants < room.max_number:
             Amity.available_living_spaces.append(room.room_name)
+
+def clear():
+    del Amity.available_living_spaces[:]
+    del Amity.available_offices[:]
