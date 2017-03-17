@@ -79,3 +79,21 @@ def print_rooms():
                 print colored("------------------------------", "blue")
                         
         return "SUCCESS!!" 
+
+def print_available_rooms():
+    print colored("<== AVAILABLE AMITY ROOMS ==>", "green")
+    print colored("    ---------------------   ", "green")
+    if (len(Room.rooms[0]) == 0) and (len(Room.rooms[1]) == 0):
+        print colored(" NO ROOMS AVAILABLE IN AMITY", "red")
+        print colored("------------------------------", "green")
+        return "EMPTY"
+    else:
+        for room_type in Room.rooms:
+            for room in room_type:
+                if room.num_of_occupants < room.max_number:
+                    print "ROOM NAME: %s"%room.room_name
+                    print "ROOM TYPE: %s"%room.room_type
+                    print "NUMBER OF OCCUPANTS: %s"%room.num_of_occupants
+                    print colored("------------------------------", "green")
+                        
+        return "SUCCESS!!"
