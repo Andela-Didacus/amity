@@ -97,3 +97,154 @@ def print_available_rooms():
                     print colored("------------------------------", "green")
                         
         return "SUCCESS!!"
+
+def allocate_room(full_name, role, accomodation_status, timestamp):
+    if role == "STAFF" and accomodation_status == "Y":
+        living_space = "----"
+        for room in Room.offices:
+            if room.num_of_occupants < room.max_number:
+                office = room.room_name
+                first_name, last_name = full_name.split(" ")
+                database.add_person(full_name, role, office, living_space, timestamp)
+                first_name = Amity(full_name, role, office, living_space)
+                Room.allocated_persons.append(first_name)
+                Room.allocated_rooms.append(office)
+                room.num_of_occupants += 1
+                database.update_room(room.num_of_occupants, room.room_name)
+                print "STAFF ARE NOT ALLOWED LIVING SPACES!!"
+                break
+        else:
+            print
+            Amity.unallocated_staff.append(full_name + " " + "STAFF" + " " + "Y" + " " + "N") 
+            print colored("NO ROOMS AVAILABLE!! ADDED TO WAITING LIST", "red")
+            print colored("------------------------------------------", "red")
+            return "NO ROOMS AVAILABLE!!"
+            
+        print colored("*--*--*STAFF SUCCESSFULLY ADDED*--*--*", "yellow")
+        print colored("       ------------------------        ", "yellow")
+        print "NAME: %s"%full_name
+        print "ROLE: %s"%role
+        print "OFFICE: %s"%office
+        print colored("---------------------------------------", "yellow")
+        print 
+        return "ROOM SUCCESSFULLY ASSIGNED!!"
+
+    elif role == "STAFF" and accomodation_status == "N":
+        living_space = "----"
+        for room in Room.offices:
+            if room.num_of_occupants < room.max_number:
+                office = room.room_name
+                first_name, last_name = full_name.split(" ")
+                database.add_person(full_name, role, office, living_space, timestamp)
+                first_name = Amity(full_name, role, office, living_space)
+                Room.allocated_persons.append(first_name)
+                Room.allocated_rooms.append(office)
+                room.num_of_occupants += 1
+                database.update_room(room.num_of_occupants, room.room_name)
+                break
+        else:
+            print 
+            Amity.unallocated_staff.append(full_name + " " + "STAFF" + " " + "Y" + " " + "N")
+            print colored("NO ROOMS AVAILABLE!! ADDED TO WAITING LIST", "red")
+            print colored("-------------------", "red")
+            return "NO ROOMS AVAILABLE!!"
+
+        print colored("*--*--*STAFF SUCCESSFULLY ADDED*--*--*", "yellow")
+        print colored("       ------------------------        ", "yellow")
+        print "NAME: %s"%full_name
+        print "ROLE: %s"%role
+        print "OFFICE: %s"%office
+        print colored("---------------------------------------", "yellow")
+        print
+        return "ROOM SUCCESSFULLY ASSIGNED!!"
+    
+    elif role == "FELLOW" and accomodation_status == "N":
+        living_space = "----"
+        for room in Room.offices:
+            if room.num_of_occupants < room.max_number:
+                office = room.room_name
+                first_name, last_name = full_name.split(" ")
+                database.add_person(full_name, role, office, living_space, timestamp)
+                first_name = Amity(full_name, role, office, living_space)
+                Room.allocated_persons.append(first_name)
+                Room.allocated_rooms.append(office)
+                room.num_of_occupants += 1
+                database.update_room(room.num_of_occupants, room.room_name)
+                break
+        else:
+            print 
+            Amity.unallocated_fellows.append(full_name + " " + "FELLOW" + " " + "Y" + " " + "N")
+            print colored("NO ROOMS AVAILABLE!! ADDED TO WAITING LIST", "red")
+            print colored("------------------", "red")
+            return "NO ROOMS AVAILABLE!!"
+
+        print colored("*--*--*FELLOW SUCCESSFULLY ADDED*--*--*", "yellow")
+        print colored("       -------------------------       ", "yellow")
+        print "NAME: %s"%full_name
+        print "ROLE: %s"%role
+        print "OFFICE: %s"%office
+        print colored("----------------------------------------", "yellow")
+        print 
+        return "ROOM SUCCESSFULLY ASSIGNED!!"
+
+    elif role == "FELLOW" and accomodation_status == "Y":
+        for room in Room.living_spaces:
+            if room.num_of_occupants < room.max_number:
+                living_space = room.room_name
+                room.num_of_occupants += 1
+                database.update_room(room.num_of_occupants, room.room_name)
+                break
+        else:
+            print
+            print colored("NO LIVING SPACES AVAILABLE!! ONLY OFFICE ASSIGNED AND ADDED TO WAITING LIST", "blue")
+            living_space = "----"
+            Amity.unallocated_fellows.append(full_name + " " + "FELLOW" + " " + "N" + " " + "Y")
+
+        for room in Room.offices:
+            if room.num_of_occupants < room.max_number:
+                office = room.room_name
+                first_name, last_name = full_name.split(" ")
+                database.add_person(full_name, role, office, living_space, timestamp)
+                first_name = Amity(full_name, role, office, living_space)
+                Room.allocated_persons.append(first_name)
+                Room.allocated_rooms.append(office)
+                Room.allocated_rooms.append(living_space)
+                room.num_of_occupants += 1
+                database.update_room(room.num_of_occupants, room.room_name)
+                break
+        else:
+            if living_space != "----":
+                office = "----"
+                Amity.unallocated_fellows.append(full_name + " " + "FELLOW" + " " + "Y" + " " + "N") #NEED WORK
+                print colored("ONLY LIVING SPACE AVAILABLE!! ADDED TO OFFICE WAITING LIST", "red")
+                print colored("----------------------------------------------------------", "red")
+                first_name, last_name = full_name.split(" ")
+                database.add_person(full_name, role, office, living_space, timestamp)
+                first_name = Amity(full_name, role, office, living_space)
+                Room.allocated_persons.append(first_name)
+                Room.allocated_rooms.append(office)
+                Room.allocated_rooms.append(living_space)
+            else:
+                print
+                Amity.unallocated_fellows.append(full_name + " " + "FELLOW" + " " + "Y" + " " + "Y") #NEED WORK
+                print colored("NO ROOMS AVAILABLE!!", "red")
+                print colored("------------------", "red")
+                return "NO ROOMS AVAILABLE!!"
+                
+                
+        print colored("*--*--*FELLOW SUCCESSFULLY ADDED*--*--*", "yellow")
+        print colored("       -------------------------       ", "yellow")
+        print "NAME: %s"%full_name
+        print "ROLE: %s"%role
+        print "OFFICE: %s"%office
+        print "LIVING SPACE: %s"%living_space
+        print colored("----------------------------------------", "yellow")
+        print 
+        return "ROOM SUCCESSFULLY ASSIGNED!!"
+
+    else:
+        print colored("INVALID INPUT!! PLEASE TRY AGAIN", "red")
+        print
+        return "INVALID INPUT"
+
+
