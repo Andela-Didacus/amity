@@ -2,6 +2,10 @@ import sys
 import datetime
 import time
 import database
+from amity import Amity
+from termcolor import cprint, colored
+from room import allocate_room, create_room, print_available_rooms,print_rooms, Room, print_allocations, print_room, print_unallocated, check_rooms, clear
+
 
 class Person:
     staff = []
