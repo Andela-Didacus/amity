@@ -76,4 +76,4 @@ def add_person(full_name, role, office, living_space, timestamp):
         print colored("---------------------------------------------------------", "red")
         return "Error! room name already exists!!"
 
-    
+     
