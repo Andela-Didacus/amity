@@ -61,4 +61,21 @@ def create_room(room_name):
     print "ROOM TYPE: %s"%room_name.room_type
     print "DATE CREATED: %s"%room_name.timestamp
     print colored("*--*--*--*--*--*--*--*", "cyan")
-    return "ROOM SUCCESSFULLY CREATED IN AMITY"  
+    return "ROOM SUCCESSFULLY CREATED IN AMITY" 
+
+def print_rooms():
+    
+    print colored("<== AMITY ROOMS ==>", "blue")
+    print colored("    -----------    ", "blue")
+    if (len(Room.rooms[0]) == 0) and (len(Room.rooms[1]) == 0):
+        print colored("NO ROOMS AVAILABLE IN AMITY", "red")
+        return "EMPTY"
+    else:
+        for room_type in Room.rooms:
+            for room in room_type:
+                print "ROOM NAME: %s"%room.room_name
+                print "ROOM TYPE: %s"%room.room_type
+                print "NUMBER OF OCCUPANTS: %s"%room.num_of_occupants
+                print colored("------------------------------", "blue")
+                        
+        return "SUCCESS!!" 
