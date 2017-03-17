@@ -364,3 +364,12 @@ def print_room(room_name):
                         print "NAME: %s"%person.full_name
                         print "------------------------" 
                 return "SUCCESS!"
+
+def check_rooms():
+    for room in Room.offices:
+        if room.num_of_occupants < room.max_number:
+            Amity.available_offices.append(room.room_name)
+
+    for room in Room.living_spaces:
+        if room.num_of_occupants < room.max_number:
+            Amity.available_living_spaces.append(room.room_name)
