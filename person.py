@@ -178,4 +178,65 @@ def reallocate_room(full_name, room_name):
                                 print 
                                 return "ROOM SUCCESSFULLY ASSIGNED!!"
                                 break
+
+def allocate_unallocated():
+    check_rooms()
+    if len(Amity.available_offices) != 0 or len(Amity.available_offices) !=0:   #checks for availability of room
+        if len(Amity.unallocated_fellows) != 0 or len(Amity.unallocated_staff) != 0: #checks if any person unallocated
+            for person in Amity.unallocated_fellows:
+                first_name, last_name, role, office_status, living_space_status = person.split(" ")
+                full_name = first_name + ' ' + last_name
+                # print colored(role, "red")
+                if office_status == "Y" and living_space_status == "Y":
+                    create_person(first_name, last_name, role, "Y")
+                    Amity.unallocated_fellows.remove(person)
+                    clear()
+                elif office_status == "Y" and living_space_status == "N":
+                    if isinstance(first_name, Amity):
+                        check_rooms()
+                        if len(Amity.available_offices) != 0:
+                            for room in Room.offices:
+                                if room.num_of_occupants < room.max_number:
+                                    office = room.room_name
+                                    room.num_of_occupants += 1
+                                    database.update_room(room.num_of_occupants, room.room_name)
+                                    break
+                            reallocate_room(full_name, office)
+                            clear()
+                    else:
+                        print "errooooooor"
                             
+                        
+
+                elif office_status == "N" and living_space_status == "Y":
+                    check_rooms()
+                    if len(Amity.available_living_spaces) != 0:
+                        for room in Room.living_spaces:
+                            if room.num_of_occupants < room.max_number:
+                                living_space = room.room_name
+                                room.num_of_occupants += 1
+                                database.update_room(room.num_of_occupants, room.room_name)
+                                break
+                        reallocate_room(full_name, living_space)
+                        clear()
+                    else:
+                        print colored("NO LIVING SPACES AVAILABLE!!", "red")
+                        
+                             
+            for person in Amity.unallocated_staff:
+                check_rooms()
+                if len(Amity.available_offices) != 0:
+                    first_name, last_name, role, office_status, living_space_status = person.split(" ")
+                    full_name = first_name + ' ' + last_name
+                    create_person(first_name, last_name, "staff", "N")
+                    Amity.unallocated_staff.remove(person)
+                    clear()
+                else:
+                    print "OFFICES FULL!! STAFF NOT ALLOCATED"
+
+        else:
+            print colored("NO PERSON IS UNALLOCATED!!", "magenta")
+    else:
+        print colored("NO ROOMS AVAILABLE FOR ALLOCATION", "magenta")
+        return "ROOMS FULL!!"
+    clear()
