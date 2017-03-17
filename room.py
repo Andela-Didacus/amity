@@ -21,3 +21,44 @@ class Room:
 
         else:
             print "Invalid Input"
+
+def create_room(room_name):
+    if type(room_name) != str:
+        print "INVALID NAME INPUT"
+        return "INVALID input!!"
+    else:
+        room_name = room_name.upper()
+        if room_name in Amity.offices or room_name in Amity.living_spaces:
+            print colored("ROOM NAME ALREADY EXISTS!! USE ANOTHER NAME", "red")
+            print
+            # return "ROOM EXISTS!"
+        else:
+            day = time.time()
+            timestamp = str(datetime.datetime.fromtimestamp(day).strftime("%y-%m-%d"))
+            room_types = ["LIVING SPACE", "OFFICE"]
+            room_type = random.choice(room_types)
+            print room_type
+            print room_name
+
+            if room_type == "OFFICE":
+                database.create_room(room_name, room_type, 6, 0, timestamp)
+                room_name = Room(room_name, room_type, timestamp)
+                Room.offices.append(room_name)
+                Amity.offices.append(room_name.room_name)
+            elif room_type == "LIVING SPACE":
+                database.create_room(room_name, room_type, 4, 0, timestamp)
+                room_name = Room(room_name, room_type, timestamp)
+                Room.living_spaces.append(room_name)
+                Amity.living_spaces.append(room_name.room_name)
+            else:
+                print colored("INVALID INPUT! ENTER 1 OR 2", "red")
+                print
+                return "INVALID ROOM TYPE INPUT!!"
+
+    print colored("*--* AMITY *--*", "cyan")
+    print colored("     -----      ", "cyan")
+    print "ROOM_NAME: %s"%room_name.room_name
+    print "ROOM TYPE: %s"%room_name.room_type
+    print "DATE CREATED: %s"%room_name.timestamp
+    print colored("*--*--*--*--*--*--*--*", "cyan")
+    return "ROOM SUCCESSFULLY CREATED IN AMITY"  
