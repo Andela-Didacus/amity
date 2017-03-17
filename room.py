@@ -247,4 +247,91 @@ def allocate_room(full_name, role, accomodation_status, timestamp):
         print
         return "INVALID INPUT"
 
+def delete_room(room_name):
+    if type(room_name) is not str:
+        print colored("INVALID ROOM NAME", "red")
+        return "INVALID ROOM NAME"
+    else:
+        room_name = room_name.upper()
+        if room_name not in Amity.offices and room_name not in Amity.living_spaces:
+            print colored("ROOM DOES NOT EXIST!!", "red")
+            return "INVALID ROOM NAME"
+        else:
+            if room_name in Amity.offices:
+                Amity.offices.remove(room_name)
+                database.delete_room(room_name)
+                for room in Room.offices:
+                    if room.room_name == room_name:
+                        Room.offices.remove(room)
+                        del room
+                print "---------------------------------"
+                print colored("ROOM %s SUCCESSFULLY DELETED"%room_name, "red")
+                print
+                return "SUCCESS"
 
+            elif room_name in Amity.living_spaces:
+                Amity.living_spaces.remove(room_name)
+                database.delete_room(room_name)
+                for room in Room.living_spaces:
+                    if room.room_name == room_name:
+                        Room.living_spaces.remove(room) 
+                        del room
+                print "--------------------------------"
+                print colored("ROOM %s SUCCESSFULLY DELETED"%room_name ,"red")
+                print
+                return "SUCCESS"
+
+def print_allocations():
+    if len(Room.allocated_persons) == 0:
+        print colored("<== AMITY ALLOCATIONS ==> ", "cyan")
+        print colored("    -----------------     ", "cyan")
+        print colored(" NO ALLOCATIONS AVAILABLE", "red")
+        print colored("--------------------------", "cyan")
+        print
+        return "EMPTY!!"
+    else:
+        print colored("<== AMITY ALLOCATIONS ==> ", "cyan")
+        print colored("    -----------------     ", "cyan")
+        for person in Room.allocated_persons:
+            if person.role == "STAFF":
+                print colored("-----------------------------------------", "cyan")
+                print colored("|STAFF NAME: %s"%person.full_name, "cyan")
+                print colored("|ALLOCATED OFFICE: %s"%person.office, "cyan")
+                print colored("-----------------------------------------", "cyan")
+
+        for person in Room.allocated_persons:
+            if person.role == "FELLOW":
+                if person.living_space == "----":
+                    print colored("-----------------------------------------", "cyan")
+                    print colored("|FELLOW NAME: %s"%person.full_name, "cyan")
+                    print colored("|ALLOCATED OFFICE: %s"%person.office, "cyan")
+                    print colored("-----------------------------------------", "cyan")
+                else:
+                    print colored("-----------------------------------------", "cyan")
+                    print colored("|FELLOW NAME: %s"%person.full_name, "cyan")
+                    print colored("|ALLOCATED OFFICE: %s"%person.office, "cyan")
+                    print colored("|ALLOCATED LIVING SPACE: %s"%person.living_space, "cyan")
+                    print colored("-----------------------------------------", "cyan")
+
+        return "SUCCESS!!"
+
+def print_unallocated():
+    if len(Amity.unallocated_fellows) == 0 and len(Amity.unallocated_staff) == 0:
+        print colored("OOPS!! ALL PERSONS ARE ALLOCATED!!", "magenta")
+        return "ALL ALLOCATED"
+    else:
+        print colored("<== UNALLOCATED PERSONS IN AMITY ==>", "cyan")
+        print colored("    ----------------------------    ", "cyan")
+        for person in Amity.unallocated_fellows:
+            first_name, last_name, role, office_status, accomodation_status = person.split(" ")
+            print colored("-----------------------------------", "cyan")
+            print "|NAME: %s %s "%(first_name,last_name)
+            print "|ROLE: FELLOW"
+            print "|"
+        for person in Amity.unallocated_staff:
+            first_name, last_name, role, office_status, accomodation_status = person.split(" ")
+            print colored("-----------------------------------", "cyan")
+            print "|NAME: %s %s "%(first_name,last_name)
+            print "|ROLE: STAFF" 
+            print "|"
+        return "SUCCESS!!" 
