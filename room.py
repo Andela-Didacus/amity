@@ -335,3 +335,32 @@ def print_unallocated():
             print "|ROLE: STAFF" 
             print "|"
         return "SUCCESS!!" 
+
+def print_room(room_name):
+    if type(room_name) != str or len(room_name) == 0:
+        print colored("INVALID INPUT!! ROOM NAME CANNOT BE EMPTY OR A NON-STRING!!", "red")
+        return "INVALID TYPE INPUT!!"
+    else:
+        room_name = room_name.upper()
+        if room_name not in Amity.rooms[0] and room_name not in Amity.rooms[1]:
+            print colored("INVALID INPUT!! ROOM DOES NOT EXIST", "red")
+            print
+            return "INVALID ROOM INPUT!! "
+        else:
+            if room_name not in Room.allocated_rooms:
+                print colored("INVALID INPUT!! ROOM DOES HAS NOT BEEN ALLOCATED", "red")
+                print
+                return "INVALID ROOM INPUT!!"
+            else:
+                print colored("*--*--* %s ALLOCATIONS *--*--*", "blue")
+                print colored("     ------------------------    ")
+                for person in Room.allocated_persons:
+                    if person.office == room_name:
+                        print "------------------------"
+                        print "NAME: %s"%person.full_name
+                        print "------------------------" 
+                    elif person.living_space == room_name:
+                        print "------------------------"
+                        print "NAME: %s"%person.full_name
+                        print "------------------------" 
+                return "SUCCESS!"
