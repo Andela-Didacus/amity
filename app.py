@@ -5,7 +5,7 @@ interactive command application.
 Usage:
     amity create_room <room_name>
     amity delete_room <room_name> 
-    amity add_person <first_name> <last_name> <role> [--yes=wants_accommodation]
+    amity add_person <first_name> <last_name> <role> <accomodation>
     amity reallocate_person <person_identifier> <new_room_name>
     amity load_people
     amity print_rooms
@@ -83,7 +83,7 @@ class MyInteractive(cmd.Cmd):
 Usage:
     AMITY create_room <room_name>
     AMITY delete_room <room_name> 
-    AMITY add_person <first_name> <last_name> <role> [--yes=wants_accommodation]           
+    AMITY add_person <first_name> <last_name> <role> <accomodation>         
     AMITY reallocate_person <person_first_name> <person_last_name> <new_room_name>
     AMITY load_people
     AMITY print_rooms
@@ -107,8 +107,8 @@ Options:
     def do_exit(self, arg):
         """Usage: exit"""
         print
-        print colored("CLOSING AMITY APPLICATION!", "red")
-        print colored("*--*--*-*BYE*-*--*--*--*", "red")
+        print colored("CLOSING AMITY APPLICATION!", "magenta")
+        print colored("  *--*--* BYE *--*--*", "magenta")
         print
 
         exit()
@@ -131,24 +131,28 @@ Options:
            delete_room(room_name)
         except:
             print "error ocurred"
-
     @docopt_cmd
     def do_add_person(self, arg):
+        # '''Usage: add_person <first_name> <last_name> <role> [--accomodation=accom]'''
+        # if  arg['--accomodation'] == None:
+        #     create_person(first_name=arg['<first_name>'], last_name=arg['<last_name>'], role =arg['<role>'], "N")
+        # elif  arg['--accomodation'].upper() == 'Y':
+        #     create_person(first_name=arg['<first_name>'], last_name=arg['<last_name>'], role =arg['<role>'], "Y")
+        # elif  arg['--accomodation'].upper() == 'N':
+        #     create_person(first_name= arg['<first_name>'], last_name=arg['<last_name>'], role =arg['<role>'], "N")
         """
-        Usage: add_person <first_name> <last_name> <title> [--yes=wantsaccomodation]
+        Usage: add_person <first_name> <last_name> <title> <accomodation>
         """
         first_name = arg["<first_name>"]
         last_name = arg["<last_name>"]
         role = arg["<title>"]
-        if arg["--yes"]:
-            wants_accomodation = arg["--yes"]
-        else:
-            wants_accomodation = "N"
-            create_person(first_name, last_name, role, wants_accomodation)
-
-        #add to office
-        #add to living_space if both fellow and want_accomodation == y
-
+        accomodation = arg["<accomodation>"]
+        # if arg["--accomodate"] == "y" or arg["--accomodate"] == "n":
+        #     wants_accomodation = arg["--accomodate"]
+        # else:
+        #     wants_accomodation = "N"
+        create_person(first_name, last_name, role, accomodation)
+   
 
     @docopt_cmd
     def do_load_people(self, arg):
@@ -190,7 +194,7 @@ Options:
         try:
             print_unallocated()
             print colored("PRESS 1 TO ALLOCATE ROOMS OR PRESS 2 TO CANCEL?", "cyan")
-            allocate = str(input("==>"))
+            allocate = str(input("==> "))
             if allocate == "1":
                 allocate_unallocated()
             elif allocate == "2":

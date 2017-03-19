@@ -23,14 +23,16 @@ class Person:
         self.timestamp = str(datetime.datetime.fromtimestamp(self.day).strftime("%y-%m-%d"))
         try:
             if self.full_name in Amity.fellows or self.full_name in Amity.staff:
-                print colored("NAME ALREADY EXISTS!! USE ANOTHER NAME", "red")
+                print
+                print colored("NOTICE!! NAME ALREADY EXISTS!! USE ANOTHER NAME", "red")
+                print
                 return "DUPLICATE"
             else:
                 allocate_room(self.full_name, self.role, self.accomodation_status, self.timestamp)
-                if self.role == "STAFF":
-                    Amity.staff.append(self.full_name)
-                else:
-                    Amity.fellows.append(self.full_name)
+                # if self.role == "STAFF":
+                #     Amity.staff.append(self.full_name)
+                # else:
+                #     Amity.fellows.append(self.full_name)
 
         except:
             pass
@@ -51,7 +53,7 @@ def create_person(first_name, last_name, role, accomodation_status):
                 try:
                     role = role.upper()
                     if role not in ["STAFF","FELLOW"]:
-                        print colored("INVALID INPUT! STAFF CAN ONLY BE STAFF OR FELLOW", "red")
+                        print colored("INVALID INPUT! PERSON CAN ONLY BE STAFF OR FELLOW", "red")
                         return "INVALID ROLE INPUT!!"
                     else:
                         first_name = first_name.upper()
@@ -63,6 +65,7 @@ def create_person(first_name, last_name, role, accomodation_status):
                             Person.staff.append(first_name)
                         elif role == "FELLOW":
                             Person.fellows.append(first_name)
+                        return "successfully added!!"
 
                 except:
                     print colored("NAMES, ROLES OR ACCOMODATION STATUS CANNOT BE A NUMBER", "red")
@@ -74,32 +77,39 @@ def reallocate_room(full_name, room_name):
     if type(room_name) is not str or type(full_name) is not str:
         print colored("INVALID TYPE INPUT PLEASE TRY AGAIN", "red")
         print
-        return "INVALID INPUT"
+        return "INVALID TYPE INPUT!!"
     else:
         room_name = room_name.upper()
         full_name = full_name.upper()
         if full_name not in Amity.fellows and full_name not in Amity.staff:
-            print colored("STAFF NAME INVALID!! STAFF DOES NOT EXIST", "red")
+            print colored("-----------------------------------------", "red")
+            print colored("NOTICE!! STAFF NAME INVALID!! STAFF DOES NOT EXIST", "red")
+            print colored("CHECKOUT THE ALLOCATIONS LIST", "blue")
+            print colored("-----------------------------", "blue")
+            print_allocations()
             print
-            return "INVALID NAME!!"
+            return "STAFF DOES'NT EXIST!!"
         else:
             if room_name not in Amity.offices and room_name not in Amity.living_spaces:
                 print colored("INVALID ROOM_NAME!! ROOM DOES NOT EXIST", "red")
                 print
-                return "INVALID ROOM!!"
+                print_available_rooms()
+                return "INVALID! ROOM DOES NOT EXIST!!"
             else:
                 if full_name in Amity.staff and room_name in Amity.living_spaces:
-                    print colored("STAFF CANNOT BE RELOCATED TO LIVING SPACES", "red")
+                    print colored("NOTICE!! STAFF CANNOT BE RELOCATED TO LIVING SPACES", "red")
                     print 
-                    return "INVALID STAFF ROOM!!"
+                    return "STAFF CANNOT BE REALLOCATED TO LIVING SPACES!!"
                 else:
                     first_name, last_name = full_name.split(" ")
                     for person in Room.allocated_persons:
                         if person.full_name == full_name:
-                            print colored("<==CURRENT ROOM==>", "blue")
+                            print
+                            print colored("<==%s'S CURRENT ROOM==>"%full_name, "blue")
+                            print colored("      -----------------------------         ")
                             print "OFFICE: %s"%person.office
                             print "LIVING SPACE: %s"%person.living_space
-                            print "--------------------"
+                            print colored("-------------------------------------------", "blue")
                             print 
                             if room_name in Amity.living_spaces:
                                 for room in Room.living_spaces:
@@ -111,13 +121,12 @@ def reallocate_room(full_name, room_name):
                                     if room.room_name == room_name and room.num_of_occupants < room.max_number and room.room_name != person.living_space:
                                         living_space = room.room_name
                                         break
-                                    # # elif room.room_name == room_name and room.num_of_occupants >= room.max_number:
-                                    # #     print "SELECTED ROOM IS FULL!! PICK ANOTHER ROOM"
-                                    # #     print_available_rooms()
-                                    # #     return "ROOM FULL!!"
-                                    # #     break
                                 else:
-                                    print colored("ROOM IS FULL PLEASE PICK ANOTHER ROOM AND PERSON CANNOT BE REALLOCATED SAME ROOM", "red")
+                                    print colored("-------------------------------------------------------------------------------", "red")
+                                    print colored("ROOM IS FULL PLEASE PICK ANOTHER ROOM OR PERSON CANNOT BE REALLOCATED SAME ROOM", "red")
+                                    print 
+                                    print_available_rooms()
+                                    print
                                     return "ROOM FULL!!"
                                  
                                 for person in Room.allocated_persons:
@@ -185,47 +194,55 @@ def reallocate_room(full_name, room_name):
 
 def allocate_unallocated():
     check_rooms()
-    if len(Amity.available_offices) != 0 or len(Amity.available_offices) !=0:   #checks for availability of room
+    day = time.time()
+    timestamp = str(datetime.datetime.fromtimestamp(day).strftime("%y-%m-%d"))
+    if len(Amity.available_offices) != 0 or len(Amity.available_living_spaces) !=0:   #checks for availability of room
         if len(Amity.unallocated_fellows) != 0 or len(Amity.unallocated_staff) != 0: #checks if any person unallocated
             for person in Amity.unallocated_fellows:
                 first_name, last_name, role, office_status, living_space_status = person.split(" ")
                 full_name = first_name + ' ' + last_name
                 # print colored(role, "red")
                 if office_status == "Y" and living_space_status == "Y":
-                    create_person(first_name, last_name, role, "Y")
+                    allocate_room(full_name, role, "Y", timestamp)
                     Amity.unallocated_fellows.remove(person)
                     clear()
                 elif office_status == "Y" and living_space_status == "N":
-                    if isinstance(first_name, Amity):
-                        check_rooms()
                         if len(Amity.available_offices) != 0:
                             for room in Room.offices:
                                 if room.num_of_occupants < room.max_number:
                                     office = room.room_name
-                                    room.num_of_occupants += 1
                                     database.update_room(room.num_of_occupants, room.room_name)
                                     break
-                            reallocate_room(full_name, office)
-                            clear()
-                    else:
-                        print "errooooooor"
-                            
-                        
+                            if isinstance(first_name, Amity):
+                                check_rooms()
+                                reallocate_room(full_name, office)
+                                Amity.unallocated_fellows.remove(person)
+                                clear()
 
+                            else:
+                                allocate_room(full_name, role, "N", timestamp)
+                                Amity.unallocated_fellows.remove(person)
+                                clear()
+                        else:
+                            print
+                            print colored("NOTICE!! NO ROOMS AVAILABLE FOR ALLOCATION", "red")
+                            print
+            
                 elif office_status == "N" and living_space_status == "Y":
                     check_rooms()
                     if len(Amity.available_living_spaces) != 0:
                         for room in Room.living_spaces:
                             if room.num_of_occupants < room.max_number:
                                 living_space = room.room_name
-                                room.num_of_occupants += 1
                                 database.update_room(room.num_of_occupants, room.room_name)
                                 break
                         reallocate_room(full_name, living_space)
+                        Amity.unallocated_fellows.remove(person)
                         clear()
                     else:
+                        print 
                         print colored("NO LIVING SPACES AVAILABLE!!", "red")
-                        
+                    clear()
                              
             for person in Amity.unallocated_staff:
                 check_rooms()
@@ -237,7 +254,7 @@ def allocate_unallocated():
                     clear()
                 else:
                     print "OFFICES FULL!! STAFF NOT ALLOCATED"
-
+                clear()
         else:
             print colored("NO PERSON IS UNALLOCATED!!", "magenta")
     else:

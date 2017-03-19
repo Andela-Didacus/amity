@@ -76,4 +76,29 @@ def add_person(full_name, role, office, living_space, timestamp):
         print colored("---------------------------------------------------------", "red")
         return "Error! room name already exists!!"
 
-     
+
+def delete_room(room_name):
+    conn = sqlite3.connect('amity.db')
+
+    c = conn.cursor()
+    c.execute("DELETE from rooms WHERE ROOM_NAME =?;", (room_name,))
+    # print "ROOM %s HAS BEEN DELETED" %room_name
+    print
+
+    conn.commit()
+    c.close()
+
+def delete_person(staff_name):
+    conn = sqlite3.connect('amity.db')
+
+    c = conn.cursor()
+    c.execute("DELETE from amity WHERE FULL_NAME =?;", (staff_name,))
+
+    # print "STAFF %s HAS BEEN DELETED" %staff
+    # print
+
+    conn.commit()
+    c.close()
+
+def load_state(db_name):
+    pass     
