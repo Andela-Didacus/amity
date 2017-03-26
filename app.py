@@ -37,6 +37,7 @@ from docopt import docopt, DocoptExit
 
 from database import save_state, load_state
 from room import Rooms, create_room
+from person import create_person
 
 
 
@@ -123,19 +124,19 @@ Options:
         except:
             print "AN ERROR HAS OCCURED"
 
-    # @docopt_cmd
-    # def do_add_person(self, arg):
-    #     """
-    #     Usage: add_person <first_name> <last_name> <role> [--accomodate=wantsaccomodation]
-    #     """
-    #     first_name = arg["<first_name>"]
-    #     last_name = arg["<last_name>"]
-    #     role = arg["<role>"]
-    #     if arg["--accomodate"]:
-    #         wants_accomodation = arg["--accomodate"]
-    #     else:
-    #         wants_accomodation = "N"
-    #     create_person(first_name, last_name, role, wants_accomodation)
+    @docopt_cmd
+    def do_add_person(self, arg):
+        """
+        Usage: add_person <first_name> <last_name> <role> [--accomodate=wantsaccomodation]
+        """
+        first_name = arg["<first_name>"]
+        last_name = arg["<last_name>"]
+        role = arg["<role>"]
+        if arg["--accomodate"]:
+            wants_accomodation = arg["--accomodate"]
+        else:
+            wants_accomodation = "N"
+        create_person(first_name, last_name, role, wants_accomodation)
    
     # @docopt_cmd
     # def do_load_people(self, arg):
