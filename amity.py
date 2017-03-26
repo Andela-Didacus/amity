@@ -9,6 +9,8 @@ class Amity:
     unallocated_fellows = []
     available_living_spaces = []
     available_offices = []
+
+class Persons(Amity):
     def __init__(self, full_name, role, office, living_space):
         self.full_name = full_name
         self.role = role
