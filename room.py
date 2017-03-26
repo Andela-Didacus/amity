@@ -7,7 +7,40 @@ from amity import Amity
 
 
 class Rooms(object):
-    pass
+    def print_rooms(self):
+        print colored("\n<== AMITY ROOMS ==>", "blue")
+        print colored("    -----------    ", "blue")
+        if (len(Amity.offices) == 0) and (len(Amity.living_spaces) == 0):
+            print colored("\nNOTICE!! NO ROOMS AVAILABLE IN AMITY AT THE MOMENT\n", "red")
+            return "EMPTY"
+        else:
+            for room_type in Amity.all_rooms_details:
+                for room in room_type:
+                    print "ROOM NAME: %s"%room.room_name
+                    print "ROOM TYPE: %s"%room.room_type
+                    print "NUMBER OF OCCUPANTS: %s"%room.num_of_occupants
+                    print "DATE CREATED: %s"%room.timestamp
+                    print colored("------------------------------", "blue")
+            return "SUCCESSFULLY PRINTED!!"
+
+    def print_available_rooms(self):
+        print colored("\n<== AVAILABLE AMITY ROOMS ==>", "green")
+        print colored("    ---------------------   ", "green")
+        check_rooms()
+        if (len(Amity.available_living_spaces) == 0) and (len(Amity.available_offices) == 0):
+            print colored(" NO ROOMS AVAILABLE IN AMITY", "red")
+            print colored("------------------------------", "green")
+            return "EMPTY"
+        else:
+            for room_type in Amity.all_rooms_details:
+                for room in room_type:
+                    if room.num_of_occupants < room.max_number:
+                        print "ROOM NAME: %s"%room.room_name
+                        print "ROOM TYPE: %s"%room.room_type
+                        print "AVAILABLE SPACE: %s"%(room.max_number - room.num_of_occupants)
+                        print colored("------------------------------", "green")
+            clear()
+            return "SUCCESSFULLY PRINTED!!"
 
 
 class Office(Rooms):
@@ -68,6 +101,18 @@ def printer_room(room_name, room_type, timestamp):
     print "DATE CREATED: %s"%timestamp
     print colored("*--*--*--*--*--*--*--*\n", "cyan")
 
-create_room("dida", "office")
-print Amity.all_rooms_details
-print Amity.offices
+
+
+def check_rooms():
+    for room in Amity.office_details:
+        if room.num_of_occupants < room.max_number:
+            Amity.available_offices.append(room.room_name)
+
+    for room in Amity.living_space_details:
+        if room.num_of_occupants < room.max_number:
+            Amity.available_living_spaces.append(room.room_name)
+
+def clear():
+    del Amity.available_living_spaces[:]
+    del Amity.available_offices[:]
+

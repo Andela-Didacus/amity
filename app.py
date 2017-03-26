@@ -35,8 +35,8 @@ from termcolor import cprint
 from pyfiglet import figlet_format
 from docopt import docopt, DocoptExit
 
-# from database import load_people, save_state, load_state
-from room import create_room
+from database import save_state, load_state
+from room import Rooms, create_room
 
 
 
@@ -146,15 +146,14 @@ Options:
     #         print "Error while loading people Occured"
 
 
-    # @docopt_cmd
-    # def do_print_rooms(self,arg):
-    #     """usage: print_rooms"""
-    #     try:
-    #         amity = Rooms()
-    #         amity.print_rooms()
-    #         print
-    #     except:
-    #         print "OOPS!! An error has occurred!"
+    @docopt_cmd
+    def do_print_rooms(self,arg):
+        """usage: print_rooms"""
+        try:
+            amity.print_rooms()
+            print
+        except:
+            print "OOPS!! An error has occurred!"
             
         
 
@@ -205,14 +204,14 @@ Options:
     #     except:
     #         print colored("OOPS! AN ERROR HAS OCCURED", "red")
 
-    # @docopt_cmd
-    # def do_print_available_rooms(self, arg):
-    #     """Usage: print_available_rooms"""
-    #     # try:
-    #     amity = Rooms()
-    #     amity.print_available_space()
-    #     # except:
-    #     #     print colored("OOPS! AN ERROR HAS OCCURED", "red")
+    @docopt_cmd
+    def do_print_available_rooms(self, arg):
+        """Usage: print_available_rooms"""
+        # try:
+        # amity = Rooms()
+        amity.print_available_rooms()
+        # except:
+        #     print colored("OOPS! AN ERROR HAS OCCURED", "red")
         
     # @docopt_cmd
     # def do_print_room(self,arg):
@@ -224,16 +223,17 @@ Options:
     #         print
     #     except:
     #         print "OOPS!! AN ERROR HAS OCCURED"
-    # @docopt_cmd
-    # def do_save_state(self,arg):
-    #     """Usage: save_state [--db=sqlite_database]"""
-    #     save_state("amity.db")
-    # @docopt_cmd
-    # def do_load_state(self,arg):
-    #     """Usage: load_state <sqlite_database>"""
-    #     database_name = arg['<sqlite_database>']
 
-    #     load_state(database_name)
+    @docopt_cmd
+    def do_save_state(self,arg):
+        """Usage: save_state [--db=sqlite_database]"""
+        save_state("amity.db")
+
+    @docopt_cmd
+    def do_load_state(self,arg):
+        """Usage: load_state <sqlite_database>"""
+        database_name = arg['<sqlite_database>']
+        load_state("amity.db")
         
 
 
@@ -243,6 +243,7 @@ opt = docopt(__doc__, sys.argv[1:])
 if opt['--interactive']:
     try:
         # print (__doc__)
+        amity = Rooms()
         MyInteractive().cmdloop()
     except KeyboardInterrupt:
         print "\n"

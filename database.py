@@ -1,104 +1,39 @@
-import sys
+import pickle
 import sqlite3
-import datetime
-import time
-from termcolor import cprint,colored
+from amity import Amity
 
-def create_tables():
-    conn = sqlite3.connect('amity.db')
-    c = conn.cursor()
+def save_state(database_name):
+    db_connect = sqlite3.connect(database_name)
+    conn = db_connect.cursor()
 
-    print "successfully connected"
+    conn.execute("CREATE TABLE IF NOT EXISTS all_room_data "
+                    "(dataID INTEGER PRIMARY KEY UNIQUE, "
+                    "offices TEXT, living_spaces TEXT, rooms TEXT, office_details TEXT, living_space_details TEXT, all_rooms_details TEXT)")
+    offices = pickle.dumps(Amity.offices)
+    living_spaces = pickle.dumps(Amity.living_spaces)
+    rooms = pickle.dumps(Amity.rooms)
+    office_details = pickle.dumps(Amity.office_details)
+    living_space_details = pickle.dumps(Amity.living_space_details)
+    all_rooms_details = pickle.dumps(Amity.all_rooms_details)
 
-    conn.execute('''CREATE TABLE  rooms    
-        (ID INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE NOT NULL,
-       ROOM_NAME     TEXT    UNIQUE NOT NULL,
-       ROOM_TYPE     TEXT    NOT NULL,
-       MAX_NUMBER    INT     NOT NULL,
-       NUMBER_OF_OCCUPANTS INT  NOT NULL,
-       TIMESTAMP     TEXT    NOT NULL )''')
+    conn.execute("INSERT INTO all_room_data VALUES (null, ?, ?, ?, ?, ?, ?);",
+                    (offices, living_spaces, rooms, office_details, living_space_details, all_rooms_details))
 
-    print ("Table successfully created")
+    db_connect.commit()
+    db_connect.close() 
 
-    conn.execute('''CREATE TABLE amity      
-       (ID INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE NOT NULL,
-      FULL_NAME     TEXT    UNIQUE  NOT NULL,
-      ROLE          TEXT    NOT NULL,
-      OFFICE        TEXT    NOT NULL,
-      LIVING_SPACE    TEXT    NOT NULL,
-      TIMESTAMP       TEXT    NOT NULL
-      )''')
-    print "Table successfully created"
+def load_state(database_name):
+    db_connect = sqlite3.connect(database_name)
+    conn = db_connect.cursor()   
+    conn.execute("SELECT * FROM all_room_data WHERE dataID = (SELECT MAX(dataID) FROM all_room_data)")
+    data = conn.fetchone()
 
-    conn.commit()  # commits the current transaction to enable visibility of changes to other database connections
-    c.close()
+    Amity.offices = pickle.loads(data[1])
+    Amity.living_spaces = pickle.loads(data[2])
+    Amity.rooms = pickle.loads(data[3])
+    Amity.office_details = pickle.loads(data[4])
+    Amity.living_space_details = pickle.loads(data[5])
+    Amity.all_rooms_details = pickle.loads(data[6])
 
-def create_room(room_name, room_type, max_number,num_of_occupants, timestamp):
-    conn = sqlite3.connect('amity.db')
-    c = conn.cursor()
-    try:
-        c.execute(" INSERT INTO rooms (ROOM_NAME, ROOM_TYPE, MAX_NUMBER, NUMBER_OF_OCCUPANTS, TIMESTAMP ) VALUES(?,?,?,?,?)",
-              (room_name, room_type, max_number, num_of_occupants, timestamp))
-
-        conn.commit()
-
-        c.close()
-
-        # return "ROOM %s SUCCESSFULLY CREATED!!" %room_name
-
-    except:
-        print colored("ROOM ALREADY EXISTS in THE DATABASE!!! USE ANOTHER NAME", "red")
-        print colored("---------------------------------------------------------", "red")
-        return "Error! room name already exists!!"
-    
-def update_room(num_of_occupants,room_name):
-    conn = sqlite3.connect("amity.db")
-    c = conn.cursor()
-    c.execute("UPDATE rooms SET NUMBER_OF_OCCUPANTS = '%s' WHERE ROOM_NAME = '%s' " %
-              (num_of_occupants, room_name))
-    conn.commit()
-    c.close()
-    return "SUCCESS"
-    
-def add_person(full_name, role, office, living_space, timestamp):
-    try:
-        conn = sqlite3.connect('amity.db')
-        c = conn.cursor()
-
-        c.execute(" INSERT INTO amity (FULL_NAME, ROLE, OFFICE, LIVING_SPACE, TIMESTAMP ) VALUES(?,?,?,?,?)",
-                (full_name, role, office, living_space, timestamp))
-
-        conn.commit()
-
-        c.close()
-    except:
-        print colored("PERSON ALREADY EXISTS IN THE DATABASE!!! USE ANOTHER NAME", "red")
-        print colored("---------------------------------------------------------", "red")
-        return "Error! room name already exists!!"
-
-
-def delete_room(room_name):
-    conn = sqlite3.connect('amity.db')
-
-    c = conn.cursor()
-    c.execute("DELETE from rooms WHERE ROOM_NAME =?;", (room_name,))
-    # print "ROOM %s HAS BEEN DELETED" %room_name
-    print
-
-    conn.commit()
-    c.close()
-
-def delete_person(staff_name):
-    conn = sqlite3.connect('amity.db')
-
-    c = conn.cursor()
-    c.execute("DELETE from amity WHERE FULL_NAME =?;", (staff_name,))
-
-    # print "STAFF %s HAS BEEN DELETED" %staff
-    # print
-
-    conn.commit()
-    c.close()
-
-def load_state(db_name):
-    pass     
+    db_connect.commit()
+    db_connect.close()            
