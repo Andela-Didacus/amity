@@ -1,3 +1,12 @@
+from termcolor import cprint, colored
+import sys
+import datetime
+import time
+import itertools
+
+from amity import Amity, Persons
+from room import Rooms, check_rooms, clear, create_room
+
 class Person(object):
     def get_room(self,full_name, role, accomodation_status):
         self.day = time.time()
@@ -5,7 +14,19 @@ class Person(object):
         self.role = role
         self.full_name = full_name
         self.accomodation_status = accomodation_status
-        
+        amity = Rooms() 
+        if self.full_name in Amity.fellows or self.full_name in Amity.staff:
+                print colored("\nNOTICE!! NAME ALREADY EXISTS!! USE ANOTHER NAME\n", "red")
+                return "DUPLICATE"
+        else:
+            if self.role == "STAFF":
+                amity.allocate_staff_room(self.full_name,  self.role, self.accomodation_status, self.timestamp)
+
+            elif self.role == "FELLOW" and self.accomodation_status == "N":
+                amity.allocate_fellow_room_with_no_accomodation(self.full_name, self.role, self.accomodation_status, self.timestamp)
+
+            elif self.role == "FELLOW" and self.accomodation_status == "Y":
+                amity.allocate_fellow_with_accomodation(self.full_name, self.role, self.accomodation_status, self.timestamp)
 
 class Staff(Person):
     def __init__(self, first_name, last_name, role, accomodation_status):
@@ -39,26 +60,26 @@ def create_person(first_name, last_name, role, accomodation_status):
         print colored("\nINVALID INPUT! PERSON CAN ONLY BE STAFF OR FELLOW\n", "red")
         return "INVALID ROLE INPUT!!"
     else:
-        try:
-            if first_name.isalpha() and last_name.isalpha():
-                first_name = first_name.upper()
-                last_name = last_name.upper()
-                accomodation_status = accomodation_status.upper()
-                full_name = first_name + " " + last_name
-                if role == "STAFF":
-                    first_name = Staff(first_name, last_name, role, accomodation_status)
-                    first_name.get_room(full_name, role, accomodation_status)
-                    return "staff successfully added!!"
-                elif role == "FELLOW":
-                    first_name = Fellow(first_name, last_name, role, accomodation_status)
-                    first_name.get_room(full_name, role, accomodation_status)
-                    return "fellow successfully added!!"
-            else:
-                print colored("\nNOTICE!! NAMES CANNOT BE A NUMBER", "red")
-                print colored("---------------------------------", "red")
-                return "INVALID NUMBER NAME!!"
-        except:
-            print colored("OOPS!! SOMETHING WENT WRONG WITH THE PERSONS!!")
-            return "something went wrong!!"
+        # try:
+        if first_name.isalpha() and last_name.isalpha():
+            first_name = first_name.upper()
+            last_name = last_name.upper()
+            accomodation_status = accomodation_status.upper()
+            full_name = first_name + " " + last_name
+            if role == "STAFF":
+                first_name = Staff(first_name, last_name, role, accomodation_status)
+                first_name.get_room(full_name, role, accomodation_status)
+                return "staff successfully added!!"
+            elif role == "FELLOW":
+                first_name = Fellow(first_name, last_name, role, accomodation_status)
+                first_name.get_room(full_name, role, accomodation_status)
+                return "fellow successfully added!!"
+        else:
+            print colored("\nNOTICE!! NAMES CANNOT BE A NUMBER", "red")
+            print colored("---------------------------------", "red")
+            return "INVALID NUMBER NAME!!"
+        # except:
+        #     print colored("OOPS!! SOMETHING WENT WRONG WITH THE PERSONS!!")
+        #     return "something went wrong!!"
 
         
