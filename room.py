@@ -3,10 +3,116 @@ import datetime
 import time
 from termcolor import colored
 
-from amity import Amity
+from amity import Amity, Persons
 
 
 class Rooms(object):
+    def allocate_staff_room(self, full_name, role, accomodation_status, timestamp):
+        self.full_name = full_name
+        self.role = role
+        self.accomodation_status = accomodation_status
+        self.timestamp = timestamp
+        if role == "STAFF":
+            self.living_space = "----"
+            check_rooms()
+            if len(Amity.available_offices) == 0:
+                Amity.unallocated_staff.append(self.full_name + " " + "STAFF" + " " + "Y" + " " + "N") 
+                print colored("\nNO ROOMS AVAILABLE!! ADDED TO WAITING LIST", "red")
+                print colored("------------------------------------------\n", "red")
+                clear()
+                return "NO ROOMS AVAILABLE!!"
+            else:
+                self.office = assign_office()
+                self.first_name, self.last_name = self.full_name.split(" ")
+                self.first_name = Persons(self.full_name, self.role, self.office, self.living_space)
+                Amity.allocated_persons.append(self.first_name)
+                Amity.allocated_rooms.append(self.office)
+                Amity.staff.append(self.full_name)
+                if self.accomodation_status == "Y":
+                    print colored("\nNB: STAFF ARE NOT ALLOWED LIVING SPACES!!\n", "red")
+                printer_staff(self.full_name, self.role, self.office)
+                clear()
+                return "ROOM SUCCESSFULLY ASSIGNED!!"
+
+    def allocate_fellow_room_with_no_accomodation(self, full_name, role, accomodation_status, timestamp):
+        self.full_name = full_name
+        self.role = role
+        self.accomodation_status = accomodation_status
+        self.timestamp = timestamp
+        if role == "FELLOW":
+            self.living_space = "----"
+            check_rooms()
+            if len(Amity.available_offices) == 0:
+                Amity.unallocated_fellows.append(self.full_name + " " + "FELLOW" + " " + "Y" + " " + "N") 
+                print colored("\nNO ROOMS AVAILABLE!! ADDED TO WAITING LIST", "red")
+                print colored("------------------------------------------\n", "red")
+                clear()
+                return "NO ROOMS AVAILABLE!!"
+
+            else:
+                self.office = assign_office()
+                self.first_name, self.last_name = self.full_name.split(" ")
+                self.first_name = Persons(self.full_name, self.role, self.office, self.living_space)
+                Amity.allocated_persons.append(self.first_name)
+                Amity.allocated_rooms.append(self.office)
+                Amity.fellows.append(self.full_name)
+                printer_fellow_N(self.full_name, self.role, self.office)
+                clear()
+                return "ROOM SUCCESSFULLY ASSIGNED!!"
+
+    def allocate_fellow_with_accomodation(self, full_name, role, accomodation_status, timestamp):
+        self.full_name = full_name
+        self.role = role
+        self.accomodation_status = accomodation_status
+        self.timestamp = timestamp
+        check_rooms()
+        if len(Amity.available_offices) == 0 and len(Amity.available_living_spaces) == 0:
+            Amity.unallocated_fellows.append(self.full_name + " " + "FELLOW" + " " + "Y" + " " + "Y") 
+            print colored("\nNO ROOMS AVAILABLE!! ADDED TO WAITING LIST", "red")
+            print colored("------------------------------------------\n", "red")
+            clear()
+            return "NO ROOMS AVAILABLE!!"
+        elif len(Amity.available_living_spaces) == 0 and len(Amity.available_offices) != 0:
+            print colored("\nNO LIVING SPACES AVAILABLE!! ONLY OFFICE ASSIGNED AND ADDED TO WAITING LIST", "blue")
+            self.living_space = "----"
+            Amity.unallocated_fellows.append(self.full_name + " " + "FELLOW" + " " + "N" + " " + "Y")
+            
+            self.office = assign_office()
+            self.first_name, self.last_name = self.full_name.split(" ")
+            self.first_name = Persons(self.full_name, self.role, self.office, self.living_space)
+            Amity.allocated_persons.append(self.first_name)
+            Amity.allocated_rooms.append(self.office)
+            Amity.fellows.append(self.full_name)
+            printer_fellow_N(self.full_name, self.role, self.office)
+            clear()
+            return "ROOM SUCCESSFULLY ASSIGNED!!"
+        elif len(Amity.available_living_spaces) != 0 and len(Amity.available_offices) == 0:
+            print colored("\nNO OFFICES AVAILABLE!! ONLY LIVING SPACE ASSIGNED AND ADDED TO WAITING LIST", "blue")
+            self.office = "----"
+            Amity.unallocated_fellows.append(self.full_name + " " + "FELLOW" + " " + "Y" + " " + "N")
+
+            self.living_space = assign_living_space()
+            self.first_name, self.last_name = self.full_name.split(" ")
+            self.first_name = Persons(self.full_name, self.role, self.office, self.living_space)
+            Amity.allocated_persons.append(self.first_name)
+            Amity.allocated_rooms.append(self.office)
+            Amity.fellows.append(self.full_name)
+            printer_fellow_accomodation_only(self.full_name, self.role, self.living_space)
+            clear()
+            return "ROOM SUCCESSFULLY ASSIGNED!!"
+
+        elif len(Amity.available_living_spaces) != 0 and len(Amity.available_offices) != 0:
+            self.office = assign_office()
+            self.living_space = assign_living_space()
+            self.first_name, self.last_name = self.full_name.split(" ")
+            self.first_name = Persons(self.full_name, self.role, self.office, self.living_space)
+            Amity.allocated_persons.append(self.first_name)
+            Amity.allocated_rooms.append(self.office)
+            Amity.fellows.append(self.full_name)
+            printer_fellow_with_accomodation_and_office(self.full_name, self.role, self.office, self.living_space)
+            clear()
+            return "ROOM SUCCESSFULLY ASSIGNED!!"
+
     def print_rooms(self):
         print colored("\n<== AMITY ROOMS ==>", "blue")
         print colored("    -----------    ", "blue")
@@ -18,10 +124,11 @@ class Rooms(object):
                 for room in room_type:
                     print "ROOM NAME: %s"%room.room_name
                     print "ROOM TYPE: %s"%room.room_type
-                    print "NUMBER OF OCCUPANTS: %s"%room.num_of_occupants
                     print "DATE CREATED: %s"%room.timestamp
                     print colored("------------------------------", "blue")
             return "SUCCESSFULLY PRINTED!!"
+
+        
 
     def print_available_rooms(self):
         print colored("\n<== AVAILABLE AMITY ROOMS ==>", "green")
@@ -116,3 +223,51 @@ def clear():
     del Amity.available_living_spaces[:]
     del Amity.available_offices[:]
 
+def assign_office():
+    for room in Amity.office_details:
+        if room.num_of_occupants < room.max_number:
+            office = room.room_name
+            room.num_of_occupants += 1
+            break
+    return office
+
+def assign_living_space():
+    for room in Amity.living_space_details:
+        if room.num_of_occupants < room.max_number:
+            living_space = room.room_name
+            room.num_of_occupants += 1
+            break
+    return living_space
+
+def printer_staff(full_name, role, office):
+    print colored("\n*--*--*STAFF SUCCESSFULLY ADDED*--*--*", "yellow")
+    print colored("       ------------------------        ", "yellow")
+    print "NAME: %s"%full_name
+    print "ROLE: %s"%role
+    print "OFFICE: %s"%office
+    print colored("---------------------------------------\n", "yellow")
+
+def printer_fellow_N(full_name,role, office):
+    print colored("\n*--*--*FELLOW SUCCESSFULLY ADDED*--*--*", "yellow")
+    print colored("       -------------------------       ", "yellow")
+    print "NAME: %s"%full_name
+    print "ROLE: %s"%role
+    print "OFFICE: %s"%office
+    print colored("----------------------------------------\n", "yellow")
+
+def printer_fellow_accomodation_only(full_name, role, living_space):
+    print colored("\n*--*--*FELLOW SUCCESSFULLY ADDED*--*--*", "yellow")
+    print colored("       -------------------------       ", "yellow")
+    print "NAME: %s"%full_name
+    print "ROLE: %s"%role
+    print "LIVING SPACE: %s"%living_space
+    print colored("----------------------------------------\n", "yellow")
+
+def printer_fellow_with_accomodation_and_office(full_name, role, office, living_space):
+    print colored("\n*--*--*FELLOW SUCCESSFULLY ADDED*--*--*", "yellow")
+    print colored("       -------------------------       ", "yellow")
+    print "NAME: %s"%full_name
+    print "ROLE: %s"%role
+    print "OFFICE: %s"%office
+    print "LIVING SPACE: %s"%living_space
+    print colored("----------------------------------------\n", "yellow") 
