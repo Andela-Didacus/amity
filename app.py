@@ -35,9 +35,9 @@ from termcolor import cprint
 from pyfiglet import figlet_format
 from docopt import docopt, DocoptExit
 
-from database import save_state, load_state
+from database import save_state, load_state, load_people
 from room import Rooms, create_room
-from person import create_person
+from person import create_person, reallocate_person, allocate_unallocated
 
 
 
@@ -138,13 +138,13 @@ Options:
             wants_accomodation = "N"
         create_person(first_name, last_name, role, wants_accomodation)
    
-    # @docopt_cmd
-    # def do_load_people(self, arg):
-    #     """usage: load_people"""
-    #     try: 
-    #         load_people()
-    #     except:
-    #         print "Error while loading people Occured"
+    @docopt_cmd
+    def do_load_people(self, arg):
+        """usage: load_people"""
+        try: 
+            load_people()
+        except:
+            print "Error while loading people Occured"
 
 
     @docopt_cmd
@@ -158,52 +158,50 @@ Options:
             
         
 
-    # @docopt_cmd
-    # def do_reallocate_person(self, arg):
-    #     """Usage: reallocate_person <person_first_name> <person_last_name> <new_room_name>""" 
-    #     first_name = arg["<person_first_name>"]
-    #     last_name = arg["<person_last_name>"]
-    #     new_room_name = arg["<new_room_name>"]
-    #     if first_name.isalpha() and last_name.isalpha() and new_room_name.isalpha():
-    #         full_name = first_name + " " + last_name
-    #         reallocate_person(full_name, new_room_name) 
-    #     else:
-    #         print colored("INVALID NUMBER INPUT!! NAME OR ROOM NAME CANNOT BE A NUMBER")
+    @docopt_cmd
+    def do_reallocate_person(self, arg):
+        """Usage: reallocate_person <person_first_name> <person_last_name> <new_room_name>""" 
+        first_name = arg["<person_first_name>"]
+        last_name = arg["<person_last_name>"]
+        new_room_name = arg["<new_room_name>"]
+        if first_name.isalpha() and last_name.isalpha() and new_room_name.isalpha():
+            full_name = first_name + " " + last_name
+            reallocate_person(full_name, new_room_name) 
+        else:
+            print colored("INVALID NUMBER INPUT!! NAME OR ROOM NAME CANNOT BE A NUMBER")
 
-    # @docopt_cmd
-    # def do_print_allocations(self, arg):
-    #     """Usage: print_allocations [--o=filename]"""
-    #     amity = Rooms()
-    #     if arg["--o"]:
-    #         filename = arg["--o"]
-    #     else:
-    #         filename = "None"
-    #     amity.print_allocations(filename)
+    @docopt_cmd
+    def do_print_allocations(self, arg):
+        """Usage: print_allocations [--o=filename]"""
+        if arg["--o"]:
+            filename = arg["--o"]
+        else:
+            filename = "None"
+        amity.print_allocations(filename)
         
 
-    # @docopt_cmd
-    # def do_print_unallocated(self, arg):
-    #     """Usage: print_unallocated [--o=filename]"""
-    #     try:
-    #         amity = Rooms()
-    #         if arg["--o"]:
-    #             filename = arg["--o"]
-    #         else:
-    #             filename = "None"
-    #         amity.print_unallocated_people(filename)
-    #         print colored("PRESS 1 TO ALLOCATE ROOMS OR PRESS 2 TO CANCEL?", "cyan")
-    #         allocate = str(input("==> "))
-    #         if allocate == "1":
-    #             allocate_unallocated()
-    #         elif allocate == "2":
-    #             print colored("THANK YOU ! :-)", "cyan")
+    @docopt_cmd
+    def do_print_unallocated(self, arg):
+        """Usage: print_unallocated [--o=filename]"""
+        # try:
+        if arg["--o"]:
+            filename = arg["--o"]
+        else:
+            filename = "None"
+        amity.print_unallocated_people(filename)
+        print colored("PRESS 1 TO ALLOCATE ROOMS OR PRESS 2 TO CANCEL?", "cyan")
+        allocate = str(input("==> "))
+        if allocate == "1":
+            allocate_unallocated()
+        elif allocate == "2":
+            print colored("THANK YOU ! :-)", "cyan")
+            
+        else:
+            print colored("INVALID NUMBER INPUT!! ENTER 1 OR 2", "cyan")
+            print colored("------------------------------------", "cyan")
                 
-    #         else:
-    #             print colored("INVALID NUMBER INPUT!! ENTER 1 OR 2", "cyan")
-    #             print colored("------------------------------------", "cyan")
-                
-    #     except:
-    #         print colored("OOPS! AN ERROR HAS OCCURED", "red")
+        # except:
+        #     print colored("OOPS! AN ERROR HAS OCCURED", "red")
 
     @docopt_cmd
     def do_print_available_rooms(self, arg):
@@ -214,16 +212,15 @@ Options:
         # except:
         #     print colored("OOPS! AN ERROR HAS OCCURED", "red")
         
-    # @docopt_cmd
-    # def do_print_room(self,arg):
-    #     """Usage: print_room <room_name>"""
-    #     try:
-    #         amity = Rooms()
-    #         room_name = arg["<room_name>"]
-    #         amity.print_room(room_name)
-    #         print
-    #     except:
-    #         print "OOPS!! AN ERROR HAS OCCURED"
+    @docopt_cmd
+    def do_print_room(self,arg):
+        """Usage: print_room <room_name>"""
+        try:
+            room_name = arg["<room_name>"]
+            amity.print_room(room_name)
+            print
+        except:
+            print "OOPS!! AN ERROR HAS OCCURED"
 
     @docopt_cmd
     def do_save_state(self,arg):
