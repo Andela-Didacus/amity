@@ -12,8 +12,8 @@ class Room(object):
     @classmethod
     def print_room(self):
         pass
-
-
+    
+    
 class Office(Room):
 
     def __init__(self, room_name, room_type, timestamp):
@@ -76,4 +76,3 @@ def printer_room(room_name, room_type, timestamp): #Helper function
     print colored("*--*--*--*--*--*--*--*--*--*\n", "cyan")
 
 create_room("dojo", "office")
-dojo = Room()
