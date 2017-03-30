@@ -1,10 +1,5 @@
 import sys
-import datetime
 from abc import ABCMeta, abstractmethod
-from termcolor import colored
-import time
-
-
 
 class Room(object):
     __metaclass__ = ABCMeta

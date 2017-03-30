@@ -35,9 +35,8 @@ from termcolor import cprint
 from pyfiglet import figlet_format
 from docopt import docopt, DocoptExit
 
-# from database import save_state, load_state, load_people
+from database import save_state, load_state, load_people
 from amity import Amity
-# from person import create_person
 
 
 
@@ -106,37 +105,37 @@ Options:
 
     def do_exit(self, arg):
         """Usage: exit"""
-        print
         print colored("CLOSING AMITY APPLICATION!", "magenta")
-        print colored("  *--*--* BYE *--*--*", "magenta")
-        print
-
+        print colored("  *--*--*  *--*--*", "magenta")
         exit()
 
 
     @docopt_cmd
     def do_create_room(self, arg):
         """Usage: create_room <room_type> <room_name>..."""
-        # try:
-        room_type = arg['<room_type>']
-        for room_name in arg["<room_name>"]:
-            Amity.create_room(room_name, room_type)
-        # except:
-            # print "AN ERROR HAS OCCURED"
+        try:
+            room_type = arg['<room_type>']
+            for room_name in arg["<room_name>"]:
+                Amity.create_room(room_name, room_type)
+        except:
+            print colored("AN ERROR HAS OCCURED WHEN CREATING ROOM", "blue")
 
     @docopt_cmd
     def do_add_person(self, arg):
         """
         Usage: add_person <first_name> <last_name> <role> [--accomodate=wantsaccomodation]
         """
-        first_name = arg["<first_name>"]
-        last_name = arg["<last_name>"]
-        role = arg["<role>"]
-        if arg["--accomodate"]:
-            wants_accomodation = arg["--accomodate"]
-        else:
-            wants_accomodation = "N"
-        Amity.add_person(first_name, last_name, role, wants_accomodation)
+        try:
+            first_name = arg["<first_name>"]
+            last_name = arg["<last_name>"]
+            role = arg["<role>"]
+            if arg["--accomodate"]:
+                wants_accomodation = arg["--accomodate"]
+            else:
+                wants_accomodation = "N"
+            Amity.add_person(first_name, last_name, role, wants_accomodation)
+        except:
+            print colored("AN ERROR HAS OCCURED WHEN ADDING PERSON", "blue")
    
     @docopt_cmd
     def do_load_people(self, arg):
@@ -144,7 +143,7 @@ Options:
         try: 
             load_people()
         except:
-            print "Error while loading people Occured"
+            print colored("AN ERROR HAS OCCURED WHEN LOADING PEOPLE", "blue")
 
 
     @docopt_cmd
@@ -154,85 +153,92 @@ Options:
             Amity.print_all_rooms()
             print
         except:
-            print "OOPS!! An error has occurred!"
+            print colored("AN ERROR HAS OCCURED WHEN PRINTING ROOM", "blue")
             
         
 
     @docopt_cmd
     def do_reallocate_person(self, arg):
-        """Usage: reallocate_person <person_first_name> <person_last_name> <new_room_name>""" 
-        first_name = arg["<person_first_name>"]
-        last_name = arg["<person_last_name>"]
-        new_room_name = arg["<new_room_name>"]
-        if first_name.isalpha() and last_name.isalpha() and new_room_name.isalpha():
-            full_name = first_name + " " + last_name
-            Amity.reallocate_person(full_name, new_room_name) 
-        else:
-            print colored("INVALID NUMBER INPUT!! NAME OR ROOM NAME CANNOT BE A NUMBER")
+        """Usage: reallocate_person <person_first_name> <person_last_name> <new_room_name>"""
+        try: 
+            first_name = arg["<person_first_name>"]
+            last_name = arg["<person_last_name>"]
+            new_room_name = arg["<new_room_name>"]
+            if first_name.isalpha() and last_name.isalpha() and new_room_name.isalpha():
+                full_name = first_name + " " + last_name
+                Amity.reallocate_person(full_name, new_room_name) 
+            else:
+                print colored("INVALID NUMBER INPUT!! NAME OR ROOM NAME CANNOT BE A NUMBER")
+        except:
+            print colored("AN ERROR HAS OCCURED REALLOCATING PERSON", "blue")
 
     @docopt_cmd
     def do_print_allocations(self, arg):
         """Usage: print_allocations [--o=filename]"""
-        if arg["--o"]:
-            filename = arg["--o"]
-        else:
-            filename = "None"
-        Amity.print_allocations(filename)
-        
+        try:
+            if arg["--o"]:
+                filename = arg["--o"]
+            else:
+                filename = "None"
+            Amity.print_allocations(filename)
+        except:
+            print colored("AN ERROR HAS OCCURED WHEN PRINTING ALLOCATIONS", "blue")
 
     @docopt_cmd
     def do_print_unallocated(self, arg):
         """Usage: print_unallocated [--o=filename]"""
-        # try:
-        if arg["--o"]:
-            filename = arg["--o"]
-        else:
-            filename = "None"
-        Amity.print_unallocated_people(filename)
-        print colored("PRESS 1 TO ALLOCATE ROOMS OR PRESS 2 TO CANCEL?", "cyan")
-        allocate = str(input("==> "))
-        if allocate == "1":
-            allocate_unallocated()
-        elif allocate == "2":
-            print colored("THANK YOU ! :-)", "cyan")
-            
-        else:
-            print colored("INVALID NUMBER INPUT!! ENTER 1 OR 2", "cyan")
-            print colored("------------------------------------", "cyan")
+        try:
+            if arg["--o"]:
+                filename = arg["--o"]
+            else:
+                filename = "None"
+            Amity.print_unallocated_people(filename)
+            print colored("PRESS 1 TO ALLOCATE ROOMS OR PRESS 2 TO CANCEL?", "cyan")
+            allocate = str(input("==> "))
+            if allocate == "1":
+                Amity.allocate_unallocated()
+            elif allocate == "2":
+                print colored("THANK YOU ! :-)", "cyan")
                 
-        # except:
-        #     print colored("OOPS! AN ERROR HAS OCCURED", "red")
+            else:
+                print colored("INVALID NUMBER INPUT!! ENTER 1 OR 2", "cyan")
+                print colored("------------------------------------", "cyan")
+                
+        except:
+            print colored("AN ERROR HAS OCCURED PRINTING UNALLOCATED ", "blue")
 
     @docopt_cmd
     def do_print_available_rooms(self, arg):
         """Usage: print_available_rooms"""
-        # try:
-        # amity = Rooms()
-        Amity.print_available_space()
-        # except:
-        #     print colored("OOPS! AN ERROR HAS OCCURED", "red")
-        
+        try:
+            Amity.print_available_space()
+        except:
+            print colored("AN ERROR HAS OCCURED WHEN PRINTING AVAILABLE ROOMS", "blue")
     @docopt_cmd
     def do_print_room(self,arg):
         """Usage: print_room <room_name>"""
-        # try:
-        room_name = arg["<room_name>"]
-        Amity.print_room(room_name)
-        #     print
-        # except:
-        #     print "OOPS!! AN ERROR HAS OCCURED"
+        try:
+            room_name = arg["<room_name>"]
+
+        except:
+            print colored("AN ERROR HAS OCCURED WHEN PRINTING ROOM", "blue")
 
     @docopt_cmd
     def do_save_state(self,arg):
         """Usage: save_state [--db=sqlite_database]"""
-        save_state("amity.db")
+        try:     
+            save_state("amity.db")
+        except:
+            print colored("AN ERROR HAS OCCURED WHEN SAVING STATE", "blue")
 
     @docopt_cmd
     def do_load_state(self,arg):
         """Usage: load_state <sqlite_database>"""
-        database_name = arg['<sqlite_database>']
-        load_state("amity.db")
-        
+        try:
+            database_name = arg['<sqlite_database>']
+            load_state("amity.db")
+        except:
+            print colored("AN ERROR HAS OCCURED WHEN LOADING STATE", "blue")
 
 
 
@@ -243,4 +249,5 @@ if opt['--interactive']:
         # print (__doc__)
         MyInteractive().cmdloop()
     except KeyboardInterrupt:
+        print "CLOSING AMITY APPLICATION"
         print "\n"

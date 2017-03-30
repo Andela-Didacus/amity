@@ -1,6 +1,7 @@
 
 class Person(object):
     pass
+    
 
 class Staff(Person):
     def __init__(self, full_name, role, office):
