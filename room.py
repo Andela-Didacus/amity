@@ -37,5 +37,3 @@ class Living_space(Room):
 
 
 
-
-create_room("dojo", "office")

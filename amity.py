@@ -1,6 +1,10 @@
+import time
+import datetime
 from termcolor import colored
 from person import Staff, Fellow
 from room import Room, Living_space, Office
+
+
 
 class Amity(object):
     offices = []
@@ -193,6 +197,9 @@ class Amity(object):
                     save_to_file.write(staff_data)    
             save_to_file.close()
             return "SUCCESSFULLY PRINTED UNALLOCATED!!" 
+
+    @staticmethod
+    def add_person(first_name, last_name, role, accomodation_status)
     
     
 

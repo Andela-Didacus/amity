@@ -36,7 +36,6 @@ from pyfiglet import figlet_format
 from docopt import docopt, DocoptExit
 
 # from database import save_state, load_state, load_people
-from room import Room, create_room
 from amity import Amity
 # from person import create_person
 
@@ -118,12 +117,12 @@ Options:
     @docopt_cmd
     def do_create_room(self, arg):
         """Usage: create_room <room_type> <room_name>..."""
-        try:
-            room_type = arg['<room_type>']
-            for room_name in arg["<room_name>"]:
-                create_room(room_name, room_type)
-        except:
-            print "AN ERROR HAS OCCURED"
+        # try:
+        room_type = arg['<room_type>']
+        for room_name in arg["<room_name>"]:
+            Amity.create_room(room_name, room_type)
+        # except:
+            # print "AN ERROR HAS OCCURED"
 
     # @docopt_cmd
     # def do_add_person(self, arg):
@@ -242,7 +241,6 @@ opt = docopt(__doc__, sys.argv[1:])
 if opt['--interactive']:
     try:
         # print (__doc__)
-        amity = Room()
         MyInteractive().cmdloop()
     except KeyboardInterrupt:
         print "\n"
