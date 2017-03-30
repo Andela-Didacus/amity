@@ -171,35 +171,35 @@ Options:
     #     else:
     #         print colored("INVALID NUMBER INPUT!! NAME OR ROOM NAME CANNOT BE A NUMBER")
 
-    # @docopt_cmd
-    # def do_print_allocations(self, arg):
-    #     """Usage: print_allocations [--o=filename]"""
-    #     if arg["--o"]:
-    #         filename = arg["--o"]
-    #     else:
-    #         filename = "None"
-    #     amity.print_allocations(filename)
+    @docopt_cmd
+    def do_print_allocations(self, arg):
+        """Usage: print_allocations [--o=filename]"""
+        if arg["--o"]:
+            filename = arg["--o"]
+        else:
+            filename = "None"
+        Amity.print_allocations(filename)
         
 
-    # @docopt_cmd
-    # def do_print_unallocated(self, arg):
-    #     """Usage: print_unallocated [--o=filename]"""
-    #     # try:
-    #     if arg["--o"]:
-    #         filename = arg["--o"]
-    #     else:
-    #         filename = "None"
-    #     amity.print_unallocated_people(filename)
-    #     print colored("PRESS 1 TO ALLOCATE ROOMS OR PRESS 2 TO CANCEL?", "cyan")
-    #     allocate = str(input("==> "))
-    #     if allocate == "1":
-    #         allocate_unallocated()
-    #     elif allocate == "2":
-    #         print colored("THANK YOU ! :-)", "cyan")
+    @docopt_cmd
+    def do_print_unallocated(self, arg):
+        """Usage: print_unallocated [--o=filename]"""
+        # try:
+        if arg["--o"]:
+            filename = arg["--o"]
+        else:
+            filename = "None"
+        Amity.print_unallocated_people(filename)
+        print colored("PRESS 1 TO ALLOCATE ROOMS OR PRESS 2 TO CANCEL?", "cyan")
+        allocate = str(input("==> "))
+        if allocate == "1":
+            allocate_unallocated()
+        elif allocate == "2":
+            print colored("THANK YOU ! :-)", "cyan")
             
-    #     else:
-    #         print colored("INVALID NUMBER INPUT!! ENTER 1 OR 2", "cyan")
-    #         print colored("------------------------------------", "cyan")
+        else:
+            print colored("INVALID NUMBER INPUT!! ENTER 1 OR 2", "cyan")
+            print colored("------------------------------------", "cyan")
                 
         # except:
         #     print colored("OOPS! AN ERROR HAS OCCURED", "red")
