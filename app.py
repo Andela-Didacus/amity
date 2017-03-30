@@ -124,19 +124,19 @@ Options:
         # except:
             # print "AN ERROR HAS OCCURED"
 
-    # @docopt_cmd
-    # def do_add_person(self, arg):
-    #     """
-    #     Usage: add_person <first_name> <last_name> <role> [--accomodate=wantsaccomodation]
-    #     """
-    #     first_name = arg["<first_name>"]
-    #     last_name = arg["<last_name>"]
-    #     role = arg["<role>"]
-    #     if arg["--accomodate"]:
-    #         wants_accomodation = arg["--accomodate"]
-    #     else:
-    #         wants_accomodation = "N"
-    #     create_person(first_name, last_name, role, wants_accomodation)
+    @docopt_cmd
+    def do_add_person(self, arg):
+        """
+        Usage: add_person <first_name> <last_name> <role> [--accomodate=wantsaccomodation]
+        """
+        first_name = arg["<first_name>"]
+        last_name = arg["<last_name>"]
+        role = arg["<role>"]
+        if arg["--accomodate"]:
+            wants_accomodation = arg["--accomodate"]
+        else:
+            wants_accomodation = "N"
+        Amity.add_person(first_name, last_name, role, wants_accomodation)
    
     @docopt_cmd
     def do_load_people(self, arg):
@@ -158,17 +158,17 @@ Options:
             
         
 
-    # @docopt_cmd
-    # def do_reallocate_person(self, arg):
-    #     """Usage: reallocate_person <person_first_name> <person_last_name> <new_room_name>""" 
-    #     first_name = arg["<person_first_name>"]
-    #     last_name = arg["<person_last_name>"]
-    #     new_room_name = arg["<new_room_name>"]
-    #     if first_name.isalpha() and last_name.isalpha() and new_room_name.isalpha():
-    #         full_name = first_name + " " + last_name
-    #         reallocate_person(full_name, new_room_name) 
-    #     else:
-    #         print colored("INVALID NUMBER INPUT!! NAME OR ROOM NAME CANNOT BE A NUMBER")
+    @docopt_cmd
+    def do_reallocate_person(self, arg):
+        """Usage: reallocate_person <person_first_name> <person_last_name> <new_room_name>""" 
+        first_name = arg["<person_first_name>"]
+        last_name = arg["<person_last_name>"]
+        new_room_name = arg["<new_room_name>"]
+        if first_name.isalpha() and last_name.isalpha() and new_room_name.isalpha():
+            full_name = first_name + " " + last_name
+            Amity.reallocate_person(full_name, new_room_name) 
+        else:
+            print colored("INVALID NUMBER INPUT!! NAME OR ROOM NAME CANNOT BE A NUMBER")
 
     @docopt_cmd
     def do_print_allocations(self, arg):
