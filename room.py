@@ -18,7 +18,6 @@ class Room(object):
 class Office(Room):
 
     def __init__(self, room_name, room_type, timestamp):
-        super(Office, self).__init__(full_name, role, office)
         self.max_number = 6
         self.num_of_occupants = 0
         super(Office, self).__init__(room_name, room_type, timestamp)

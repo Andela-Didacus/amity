@@ -1,0 +1,25 @@
+
+FELLOW NAME: DIDACUS ASEEY
+ALLOCATED OFFICE: JAVA
+-------------------------------------------------------
+
+FELLOW NAME: EUGINE LIYAI
+ALLOCATED OFFICE: JAVA
+ALLOCATED LIVING SPACE: DOJO
+----------------------------------------------
+
+STAFF NAME: SHEM OGUMBE
+ALLOCATED OFFICE: JAVA
+----------------------------------------------------------
+
+FELLOW NAME: DENNIS GATHONDU
+ALLOCATED OFFICE: JAVA
+-------------------------------------------------------
+
+STAFF NAME: MARYANNE NGANGA
+ALLOCATED OFFICE: JAVA
+----------------------------------------------------------
+
+STAFF NAME: DANIEL SUMBA
+ALLOCATED OFFICE: JAVA
+----------------------------------------------------------
