@@ -1,5 +1,5 @@
 import sys
-from abc import ABCMeta
+from abc import ABCMeta, abstractmethod
 
 
 class Room(object):
