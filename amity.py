@@ -250,7 +250,6 @@ class Amity(object):
                     print colored("\nNOTICE!! NAMES CANNOT BE A NUMBER", "red")
                     print colored("---------------------------------", "red")
                     return "INVALID NUMBER NAME!!"
-              
 
     @staticmethod
     def allocate_staff_room(first_name, last_name, role, accomodation_status):
@@ -478,7 +477,7 @@ class Amity(object):
                                 Amity.reallocate_person(full_name, office)
                                 Amity.unallocated_fellows.remove(person)
                                 clear()
-                            elif isinstance(first_name, Fellow) == False:
+                            elif isinstance(first_name, Fellow) is False:
                                 Amity.add_person(
                                     first_name, last_name, "FELLOW", "N")
                                 Amity.unallocated_fellows.remove(person)

@@ -39,7 +39,6 @@ from database import save_state, load_state, load_people
 from amity import Amity
 
 
-
 def docopt_cmd(func):
     """
     This decorator is used to simplify the try/except block and pass the result
@@ -55,8 +54,8 @@ def docopt_cmd(func):
             # The DocoptExit is thrown when the args do not match.
             # We print a message to the user and the usage block.
 
-            print ('Invalid Command!')
-            print (e)
+            print('Invalid Command!')
+            print(e)
             print
             return
 
@@ -73,11 +72,12 @@ def docopt_cmd(func):
     fn.__dict__.update(func.__dict__)
     return fn
 
+
 class MyInteractive(cmd.Cmd):
     cprint(figlet_format('   AMITY   ', font='epic'),
            'red', attrs=['bold'])
 
-    intro = colored('           WELCOME TO AMITY ROOM ALLOCATION SYSTEM',"cyan") \
+    intro = colored('           WELCOME TO AMITY ROOM ALLOCATION SYSTEM', "cyan") \
         + colored("""
 Usage:
     AMITY create_room <room_name>
@@ -109,7 +109,6 @@ Options:
         print colored("  *--*--*  *--*--*", "magenta")
         exit()
 
-
     @docopt_cmd
     def do_create_room(self, arg):
         """Usage: create_room <room_type> <room_name>..."""
@@ -136,39 +135,36 @@ Options:
             Amity.add_person(first_name, last_name, role, wants_accomodation)
         except:
             print colored("AN ERROR HAS OCCURED WHEN ADDING PERSON", "blue")
-   
+
     @docopt_cmd
     def do_load_people(self, arg):
         """usage: load_people"""
-        try: 
+        try:
             load_people()
         except:
             print colored("AN ERROR HAS OCCURED WHEN LOADING PEOPLE", "blue")
 
-
     @docopt_cmd
-    def do_print_rooms(self,arg):
+    def do_print_rooms(self, arg):
         """usage: print_rooms"""
         try:
             Amity.print_all_rooms()
             print
         except:
             print colored("AN ERROR HAS OCCURED WHEN PRINTING ROOM", "blue")
-            
-        
 
     @docopt_cmd
     def do_reallocate_person(self, arg):
         """Usage: reallocate_person <person_first_name> <person_last_name> <new_room_name>"""
-        try: 
+        try:
             first_name = arg["<person_first_name>"]
             last_name = arg["<person_last_name>"]
             new_room_name = arg["<new_room_name>"]
             if first_name.isalpha() and last_name.isalpha() and new_room_name.isalpha():
                 full_name = first_name + " " + last_name
-                Amity.reallocate_person(full_name, new_room_name) 
+                Amity.reallocate_person(full_name, new_room_name)
             else:
-                print colored("INVALID NUMBER INPUT!! NAME OR ROOM NAME CANNOT BE A NUMBER")
+                print colored("INVALID NUMBER INPUT!! NAME OR ROOM NAME CANNOT / BE A NUMBER")
         except:
             print colored("AN ERROR HAS OCCURED REALLOCATING PERSON", "blue")
 
@@ -199,11 +195,11 @@ Options:
                 Amity.allocate_unallocated()
             elif allocate == "2":
                 print colored("THANK YOU ! :-)", "cyan")
-                
+
             else:
                 print colored("INVALID NUMBER INPUT!! ENTER 1 OR 2", "cyan")
                 print colored("------------------------------------", "cyan")
-                
+
         except:
             print colored("AN ERROR HAS OCCURED PRINTING UNALLOCATED ", "blue")
 
@@ -214,8 +210,9 @@ Options:
             Amity.print_available_space()
         except:
             print colored("AN ERROR HAS OCCURED WHEN PRINTING AVAILABLE ROOMS", "blue")
+
     @docopt_cmd
-    def do_print_room(self,arg):
+    def do_print_room(self, arg):
         """Usage: print_room <room_name>"""
         try:
             room_name = arg["<room_name>"]
@@ -224,22 +221,21 @@ Options:
             print colored("AN ERROR HAS OCCURED WHEN PRINTING ROOM", "blue")
 
     @docopt_cmd
-    def do_save_state(self,arg):
+    def do_save_state(self, arg):
         """Usage: save_state [--db=sqlite_database]"""
-        try:     
+        try:
             save_state("amity.db")
         except:
             print colored("AN ERROR HAS OCCURED WHEN SAVING STATE", "blue")
 
     @docopt_cmd
-    def do_load_state(self,arg):
+    def do_load_state(self, arg):
         """Usage: load_state <sqlite_database>"""
         try:
             database_name = arg['<sqlite_database>']
             load_state("amity.db")
         except:
             print colored("AN ERROR HAS OCCURED WHEN LOADING STATE", "blue")
-
 
 
 opt = docopt(__doc__, sys.argv[1:])
