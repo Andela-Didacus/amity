@@ -33,4 +33,3 @@ class Fellow(Person):
 
     def get_name(self):
         print "Name: %s" % self.full_name
-

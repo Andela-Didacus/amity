@@ -24,7 +24,7 @@ class Amity(object):
 
     @staticmethod
     def create_room(room_name, room_type):
-        if type(room_name) != str or type(room_type) != str or room_name.isalpha() == False:
+        if type(room_name) is not str or type(room_type) is not str or room_name.isalpha() is False:
             print colored("\nINVALID NAME INPUT, NAME CANNOT BE A NUMBER\n", "red")
             return "INVALID input!!"
         else:
@@ -60,7 +60,7 @@ class Amity(object):
     def print_all_rooms():
         print colored("\n<== AMITY ROOMS ==>", "blue")
         print colored("    -----------    ", "blue")
-        if (len(Amity.office_details) == 0) and (len(Amity.living_space_details) == 0):
+        if (len(Amity.office_details) is 0) and (len(Amity.living_space_details) is 0):
             print colored("NO ROOMS AVAILABLE IN AMITY", "red")
             return "EMPTY"
         else:
@@ -86,7 +86,7 @@ class Amity(object):
         print colored("    ---------------------   ", "green")
         clear()
         check_rooms()
-        if (len(Amity.available_living_spaces) == 0) and (len(Amity.available_offices) == 0):
+        if (len(Amity.available_living_spaces) is 0) and (len(Amity.available_offices) is 0):
             print colored(" NO ROOMS AVAILABLE IN AMITY", "red")
             print colored("------------------------------", "green")
             return "EMPTY"
@@ -108,7 +108,7 @@ class Amity(object):
 
     @staticmethod
     def print_room(room_name):
-        if (type(room_name) != str) or (len(room_name) == 0) or (room_name.isalpha() == False):
+        if (type(room_name) is not str) or (len(room_name) is 0) or (room_name.isalpha() is False):
             print colored("\nINVALID INPUT!! ROOM NAME CANNOT BE EMPTY OR A NON-STRING!!\n", "red")
             return "INVALID TYPE INPUT!!"
 
@@ -129,7 +129,7 @@ class Amity(object):
     def print_allocations(file_name=None):
         print colored("\n<== AMITY ALLOCATIONS ==> ", "cyan")
         print colored("    -----------------     ", "cyan")
-        if len(Amity.allocated_persons) == 0:
+        if len(Amity.allocated_persons) is 0:
             print colored(" NO ALLOCATIONS AVAILABLE", "red")
             print colored("--------------------------\n", "cyan")
         else:
@@ -138,15 +138,15 @@ class Amity(object):
             for person in Amity.allocated_persons:
                 print colored("-----------------------------------------", "cyan")
                 print colored("|STAFF NAME: %s" % person.full_name, "cyan")
-                if person.role == "STAFF":
+                if person.role in ["STAFF"]:
                     print colored("|ALLOCATED OFFICE: %s" % person.office, "cyan")
                     print colored("-----------------------------------------\n", "cyan")
                     if file_name:
                         staff_allocations = "\nSTAFF NAME: %s\nALLOCATED OFFICE: %s\n----------------------------------------------------------\n" % (
                             person.full_name, person.office)
                         save_to_file.write(staff_allocations)
-                elif person.role == "FELLOW":
-                    if person.living_space == None:
+                elif person.role in ["FELLOW"]:
+                    if person.living_space is None:
                         print colored("|ALLOCATED OFFICE: %s" % person.office, "cyan")
                         print colored("-----------------------------------------", "cyan")
                         if file_name:
@@ -168,7 +168,7 @@ class Amity(object):
     @staticmethod
     def print_unallocated_people(file_name=None):
         file_name = file_name
-        if len(Amity.unallocated_fellows) == 0 and len(Amity.unallocated_staff) == 0:
+        if len(Amity.unallocated_fellows) is 0 and len(Amity.unallocated_staff) is 0:
             print colored("\nOOPS!! ALL PERSONS ARE ALLOCATED OR NO PERSONS ADDED TO THE SYSTEM!!\n", "magenta")
             return "ALL ALLOCATED"
         else:
@@ -186,12 +186,12 @@ class Amity(object):
                     data = "\nName: {} {} \nRole: Fellow \n".format(
                         first_name, last_name)
                     save_to_file.write(data)
-                if office_status == "Y":
+                if office_status in ["Y"]:
                     print colored("|PENDING OFFICE ALLOCATION", "cyan")
                     if file_name:
                         office_data = "Pending office Allocation\n"
                         save_to_file.write(office_data)
-                if accomodation_status == "Y":
+                if accomodation_status in ["Y"]:
                     print colored("|PENDING LIVING SPACE ALLOCATION", "cyan")
                     if file_name:
                         ls_data = "Pending Living Space Allocation"
@@ -219,7 +219,7 @@ class Amity(object):
         if (type(first_name) is not str or type(last_name) is not str) or (type(role) is not str) or (type(accomodation_status) is not str):
             print colored("\nINVALID INPUT! ONLY STRINGS ALLOWED!!\n", "red")
             return "INVALID INPUT!! TYPE ERROR!!"
-        elif len(first_name) == 0 or len(last_name) == 0:
+        elif len(first_name) is 0 or len(last_name) is 0:
             print colored("\nINVALID INPUT! BOTH NAMES MUST BE PROVIDED\n", "red")
             return "INVALID NAME INPUT!!"
         else:
@@ -240,13 +240,13 @@ class Amity(object):
                         print colored("\nNOTICE!! NAME ALREADY EXISTS!! USE ANOTHER NAME\n", "red")
                         return "DUPLICATE"
                     else:
-                        if role == "STAFF":
+                        if role in ["STAFF"]:
                             Amity.allocate_staff_room(
                                 first_name, last_name, role, accomodation_status)
-                        elif role == "FELLOW" and accomodation_status == "N":
+                        elif role in ["FELLOW"] and accomodation_status in ["N"]:
                             Amity.allocate_fellow_with_no_accomodation(
                                 first_name, last_name, role, accomodation_status)
-                        elif role == "FELLOW" and accomodation_status == "Y":
+                        elif role in ["FELLOW"] and accomodation_status in ["Y"]:
                             Amity.allocate_fellow_with_accomodation(
                                 first_name, last_name, role, accomodation_status)
                 else:
@@ -256,59 +256,57 @@ class Amity(object):
 
     @staticmethod
     def allocate_staff_room(first_name, last_name, role, accomodation_status):
-        if role == "STAFF":
-            living_space = None
-            for room in Amity.office_details:
-                if room.num_of_occupants < room.max_number:
-                    office = room.room_name
-                    full_name = first_name + " " + last_name
-                    first_name = Staff(full_name, office)
-                    Amity.allocated_persons.append(first_name)
-                    Amity.allocated_rooms.append(office)
-                    Amity.staff.append(full_name)
-                    room.num_of_occupants += 1
-                    if accomodation_status == "Y":
-                        print colored("\nNB: STAFF ARE NOT ALLOWED LIVING SPACES!!\n", "red")
-                    break
-            else:
+        living_space = None
+        for room in Amity.office_details:
+            if room.num_of_occupants < room.max_number:
+                office = room.room_name
                 full_name = first_name + " " + last_name
-                Amity.unallocated_staff.append(
-                    full_name + " " + "STAFF" + " " + "Y" + " " + "N")
-                print colored("\nNO ROOMS AVAILABLE!! ADDED TO WAITING LIST", "red")
-                print colored("------------------------------------------\n", "red")
-                return "NO ROOMS AVAILABLE!!"
-            printer_staff(full_name, role, office)
-            return "ROOM SUCCESSFULLY ASSIGNED!!"
+                first_name = Staff(full_name, office)
+                Amity.allocated_persons.append(first_name)
+                Amity.allocated_rooms.append(office)
+                Amity.staff.append(full_name)
+                room.num_of_occupants += 1
+                if accomodation_status == "Y":
+                    print colored("\nNB: STAFF ARE NOT ALLOWED LIVING SPACES!!\n", "red")
+                break
+        else:
+            full_name = first_name + " " + last_name
+            Amity.unallocated_staff.append(
+                full_name + " " + "STAFF" + " " + "Y" + " " + "N")
+            print colored("\nNO ROOMS AVAILABLE!! ADDED TO WAITING LIST", "red")
+            print colored("------------------------------------------\n", "red")
+            return "NO ROOMS AVAILABLE!!"
+        printer_staff(full_name, role, office)
+        return "ROOM SUCCESSFULLY ASSIGNED!!"
 
     @staticmethod
     def allocate_fellow_with_no_accomodation(first_name, last_name, role, accomodation_status):
-        if role == "FELLOW" and accomodation_status == "N":
-            living_space = None
-            for room in Amity.office_details:
-                if room.num_of_occupants < room.max_number:
-                    office = room.room_name
-                    full_name = first_name + " " + last_name
-                    first_name = Fellow(full_name, office, living_space)
-                    Amity.allocated_persons.append(first_name)
-                    Amity.allocated_rooms.append(office)
-                    Amity.fellows.append(full_name)
-                    room.num_of_occupants += 1
-                    break
-            else:
+        living_space = None
+        for room in Amity.office_details:
+            if room.num_of_occupants < room.max_number:
+                office = room.room_name
                 full_name = first_name + " " + last_name
-                Amity.unallocated_fellows.append(
-                    full_name + " " + "FELLOW" + " " + "Y" + " " + "N")
-                print colored("NO ROOMS AVAILABLE!! ADDED TO WAITING LIST", "red")
-                print colored("------------------", "red")
-                return "NO ROOMS AVAILABLE!!"
-            printer_fellow_N(full_name, role, office)  # printer
-            return "ROOM SUCCESSFULLY ASSIGNED!!"
+                first_name = Fellow(full_name, office, living_space)
+                Amity.allocated_persons.append(first_name)
+                Amity.allocated_rooms.append(office)
+                Amity.fellows.append(full_name)
+                room.num_of_occupants += 1
+                break
+        else:
+            full_name = first_name + " " + last_name
+            Amity.unallocated_fellows.append(
+                full_name + " " + "FELLOW" + " " + "Y" + " " + "N")
+            print colored("NO ROOMS AVAILABLE!! ADDED TO WAITING LIST", "red")
+            print colored("------------------", "red")
+            return "NO ROOMS AVAILABLE!!"
+        printer_fellow_N(full_name, role, office)  # printer
+        return "ROOM SUCCESSFULLY ASSIGNED!!"
 
     @staticmethod
     def allocate_fellow_with_accomodation(first_name, last_name, role, accomodation_status):
         clear()
         check_rooms()
-        if len(Amity.available_offices) == 0 and len(Amity.available_offices) == 0:
+        if len(Amity.available_offices) is 0 and len(Amity.available_offices) is 0:
             full_name = first_name + " " + last_name
             Amity.unallocated_fellows.append(
                 full_name + " " + "FELLOW" + " " + "Y" + " " + "Y")
@@ -342,7 +340,7 @@ class Amity(object):
                     break
 
             else:
-                if living_space != None:
+                if living_space:
                     office = None
                     Amity.unallocated_fellows.append(
                         full_name + " " + "FELLOW" + " " + "Y" + " " + "N")  # NEED WORK
@@ -390,7 +388,7 @@ class Amity(object):
                                     break
 
                             for room in Amity.living_space_details:
-                                if room.room_name == room_name and room.num_of_occupants < room.max_number and room.room_name != person.living_space:
+                                if room.room_name in room_name and room.num_of_occupants < room.max_number and room.room_name != person.living_space:
                                     living_space = room.room_name
                                     room.num_of_occupants += 1
                                     break
@@ -457,20 +455,20 @@ class Amity(object):
         clear()
         check_rooms()
         # checks for availability of room
-        if len(Amity.available_offices) != 0 or len(Amity.available_living_spaces) != 0:
-            if len(Amity.unallocated_fellows) != 0 or len(Amity.unallocated_staff) != 0:
+        if (len(Amity.available_offices) is not 0) or (len(Amity.available_living_spaces) is not 0):
+            if (len(Amity.unallocated_fellows) is not 0) or (len(Amity.unallocated_staff) is not 0):
                 for person in Amity.unallocated_fellows:
                     first_name, last_name, role, office_status, living_space_status = person.split(
                         " ")
                     full_name = first_name + ' ' + last_name
-                    if office_status == "Y" and living_space_status == "Y":
+                    if office_status in ["Y"] and living_space_status in ["Y"]:
                         Amity.add_person(first_name, last_name, role, "Y")
                         Amity.unallocated_fellows.remove(person)
                         clear()
-                    elif office_status == "Y" and living_space_status == "N":
+                    elif office_status in ["Y"] and living_space_status in ["N"]:
                         clear()
                         check_rooms()
-                        if len(Amity.available_offices) != 0:
+                        if (len(Amity.available_offices) is not 0):
                             for room in Amity.office_details:
                                 if room.num_of_occupants < room.max_number:
                                     office = room.room_name
@@ -489,10 +487,10 @@ class Amity(object):
                             print colored("\nNOTICE!! NO ROOMS AVAILABLE FOR ALLOCATION\n", "red")
                             clear()
 
-                    elif office_status == "N" and living_space_status == "Y":
+                    elif office_status in ["N"] and living_space_status in ["Y"]:
                         clear()
                         check_rooms()
-                        if len(Amity.available_living_spaces) != 0:
+                        if (len(Amity.available_living_spaces) is not 0):
                             for room in Amity.living_space_details:
                                 if room.num_of_occupants < room.max_number:
                                     living_space = room.room_name
@@ -507,7 +505,7 @@ class Amity(object):
                 for person in Amity.unallocated_staff:
                     clear()
                     check_rooms()
-                    if len(Amity.available_offices) != 0:
+                    if (len(Amity.available_offices) is not 0):
                         first_name, last_name, role, office_status, living_space_status = person.split(
                             " ")
                         full_name = first_name + ' ' + last_name
@@ -555,12 +553,12 @@ def print_room_persons(room_name):
     print colored("<== %s ALLOCATIONS ==>" % room_name, "blue")
     print colored("------------------------    ", "blue")
     for person in Amity.allocated_persons:
-        if person.office == room_name:
+        if person.office in room_name:
             print "-----------------------------------"
             print "NAME: %s" % person.full_name
             print "ROLE: %s" % person.role
             print "-----------------------------------\n"
-        elif person.living_space == room_name:
+        elif person.living_space in room_name:
             print "-----------------------------------"
             print "NAME: %s" % person.full_name
             print "ROLE: %s" % person.role
