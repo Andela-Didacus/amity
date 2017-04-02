@@ -17,7 +17,7 @@ class Staff(Person):
 
     def __init__(self, full_name,  office):
         self.role = "STAFF"
-        self.living_space = "----"
+        self.living_space = None
         super(Staff, self).__init__(full_name, office)
 
     def get_name(self):
@@ -26,7 +26,7 @@ class Staff(Person):
 
 class Fellow(Person):
 
-    def __init__(self, full_name, office, living_space):
+    def __init__(self, full_name, office, living_space=None):
         self.role = "FELLOW"
         self.living_space = living_space
         super(Fellow, self).__init__(full_name, office)

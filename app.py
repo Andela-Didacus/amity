@@ -112,12 +112,12 @@ Options:
     @docopt_cmd
     def do_create_room(self, arg):
         """Usage: create_room <room_type> <room_name>..."""
-        # try:
-        room_type = arg['<room_type>']
-        for room_name in arg["<room_name>"]:
-            Amity.create_room(room_name, room_type)
-        # except:
-        #     print colored("AN ERROR HAS OCCURED WHEN CREATING ROOM", "blue")
+        try:
+            room_type = arg['<room_type>']
+            for room_name in arg["<room_name>"]:
+                Amity.create_room(room_name, room_type)
+        except:
+            print colored("AN ERROR HAS OCCURED WHEN CREATING ROOM", "blue")
 
     @docopt_cmd
     def do_add_person(self, arg):
@@ -171,14 +171,14 @@ Options:
     @docopt_cmd
     def do_print_allocations(self, arg):
         """Usage: print_allocations [--o=filename]"""
-        try:
-            if arg["--o"]:
-                filename = arg["--o"]
-            else:
-                filename = None
-            Amity.print_allocations(filename)
-        except:
-            print colored("AN ERROR HAS OCCURED WHEN PRINTING ALLOCATIONS", "blue")
+        # try:
+        if arg["--o"]:
+            filename = arg["--o"]
+        else:
+            filename = None
+        Amity.print_allocations(filename)
+        # except:
+        #     print colored("AN ERROR HAS OCCURED WHEN PRINTING ALLOCATIONS", "blue")
 
     @docopt_cmd
     def do_print_unallocated(self, arg):
