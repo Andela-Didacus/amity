@@ -112,12 +112,12 @@ Options:
     @docopt_cmd
     def do_create_room(self, arg):
         """Usage: create_room <room_type> <room_name>..."""
-        try:
-            room_type = arg['<room_type>']
-            for room_name in arg["<room_name>"]:
-                Amity.create_room(room_name, room_type)
-        except:
-            print colored("AN ERROR HAS OCCURED WHEN CREATING ROOM", "blue")
+        # try:
+        room_type = arg['<room_type>']
+        for room_name in arg["<room_name>"]:
+            Amity.create_room(room_name, room_type)
+        # except:
+        #     print colored("AN ERROR HAS OCCURED WHEN CREATING ROOM", "blue")
 
     @docopt_cmd
     def do_add_person(self, arg):
@@ -175,7 +175,7 @@ Options:
             if arg["--o"]:
                 filename = arg["--o"]
             else:
-                filename = "None"
+                filename = None
             Amity.print_allocations(filename)
         except:
             print colored("AN ERROR HAS OCCURED WHEN PRINTING ALLOCATIONS", "blue")
@@ -187,7 +187,7 @@ Options:
             if arg["--o"]:
                 filename = arg["--o"]
             else:
-                filename = "None"
+                filename = None
             Amity.print_unallocated_people(filename)
             print colored("PRESS 1 TO ALLOCATE ROOMS OR PRESS 2 TO CANCEL?", "cyan")
             allocate = str(input("==> "))
@@ -216,26 +216,26 @@ Options:
         """Usage: print_room <room_name>"""
         try:
             room_name = arg["<room_name>"]
-
+            Amity.print_room(room_name)
         except:
             print colored("AN ERROR HAS OCCURED WHEN PRINTING ROOM", "blue")
 
     @docopt_cmd
     def do_save_state(self, arg):
         """Usage: save_state [--db=sqlite_database]"""
-        try:
-            save_state("amity.db")
-        except:
-            print colored("AN ERROR HAS OCCURED WHEN SAVING STATE", "blue")
+        # try:
+        save_state("amity.db")
+        # except:
+        #     print colored("AN ERROR HAS OCCURED WHEN SAVING STATE", "blue")
 
     @docopt_cmd
     def do_load_state(self, arg):
         """Usage: load_state <sqlite_database>"""
-        try:
-            database_name = arg['<sqlite_database>']
-            load_state("amity.db")
-        except:
-            print colored("AN ERROR HAS OCCURED WHEN LOADING STATE", "blue")
+        # try:
+        database_name = arg['<sqlite_database>']
+        load_state("amity.db")
+        # except:
+        #     print colored("AN ERROR HAS OCCURED WHEN LOADING STATE", "blue")
 
 
 opt = docopt(__doc__, sys.argv[1:])

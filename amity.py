@@ -42,11 +42,11 @@ class Amity(object):
                 timestamp = str(datetime.datetime.fromtimestamp(
                     day).strftime("%y-%m-%d"))
                 if room_type == "OFFICE":
-                    room_name = Office(room_name, room_type, timestamp)
+                    room_name = Office(room_name, timestamp)
                     Amity.office_details.append(room_name)
                     Amity.offices.append(room_name.room_name)
                 elif room_type == "LIVING SPACE":
-                    room_name = Living_space(room_name, room_type, timestamp)
+                    room_name = Living_space(room_name, timestamp)
                     Amity.living_space_details.append(room_name)
                     Amity.living_spaces.append(room_name.room_name)
                 else:
@@ -126,7 +126,7 @@ class Amity(object):
                     return "SUCCESS!!"
 
     @staticmethod
-    def print_allocations(file_name):
+    def print_allocations(file_name=None):
         file_name = file_name.upper()
         print colored("\n<== AMITY ALLOCATIONS ==> ", "cyan")
         print colored("    -----------------     ", "cyan")
@@ -141,7 +141,7 @@ class Amity(object):
                 if person.role == "STAFF":
                     print colored("|ALLOCATED OFFICE: %s" % person.office, "cyan")
                     print colored("-----------------------------------------\n", "cyan")
-                    if file_name != "NONE":
+                    if file_name:
                         staff_allocations = "\nSTAFF NAME: %s\nALLOCATED OFFICE: %s\n----------------------------------------------------------\n" % (
                             person.full_name, person.office)
                         save_to_file.write(staff_allocations)
@@ -149,7 +149,7 @@ class Amity(object):
                     if person.living_space == "----":
                         print colored("|ALLOCATED OFFICE: %s" % person.office, "cyan")
                         print colored("-----------------------------------------", "cyan")
-                        if file_name != "NONE":
+                        if file_name:
                             fellow_allocations = "\nFELLOW NAME: %s\nALLOCATED OFFICE: %s\n-------------------------------------------------------\n" % (
                                 person.full_name, person.office)
                             save_to_file.write(fellow_allocations)
@@ -157,7 +157,7 @@ class Amity(object):
                         print colored("|ALLOCATED OFFICE: %s" % person.office, "cyan")
                         print colored("|ALLOCATED LIVING SPACE: %s" % person.living_space, "cyan")
                         print colored("-----------------------------------------", "cyan")
-                        if file_name != "NONE":
+                        if file_name:
                             fellow_allocations1 = "\nFELLOW NAME: %s\nALLOCATED OFFICE: %s\nALLOCATED LIVING SPACE: %s\n----------------------------------------------\n" % (
                                 person.full_name, person.office, person.living_space)
                             save_to_file.write(fellow_allocations1)
@@ -165,10 +165,10 @@ class Amity(object):
         return "SUCCESSFULLY PRINTED!!"
 
     @staticmethod
-    def print_unallocated_people(file_name):
+    def print_unallocated_people(file_name=None):
         file_name = file_name
         if len(Amity.unallocated_fellows) == 0 and len(Amity.unallocated_staff) == 0:
-            print colored("\nOOPS!! ALL PERSONS ARE ALLOCATED!!\n", "magenta")
+            print colored("\nOOPS!! ALL PERSONS ARE ALLOCATED OR NO PERSONS ADDED TO THE SYSTEM!!\n", "magenta")
             return "ALL ALLOCATED"
         else:
             print colored("<== UNALLOCATED PERSONS IN AMITY ==>", "cyan")
@@ -180,18 +180,18 @@ class Amity(object):
                 print colored("-----------------------------------", "cyan")
                 print colored("|NAME: %s %s " % (first_name, last_name), "cyan")
                 print colored("|ROLE: FELLOW", "cyan")
-                if file_name != "None":
+                if file_name:
                     data = "\nName: {} {} \nRole: Fellow \n".format(
                         first_name, last_name)
                     save_to_file.write(data)
                 if office_status == "Y":
                     print colored("|PENDING OFFICE ALLOCATION", "cyan")
-                    if file_name != "None":
+                    if file_name:
                         office_data = "Pending office Allocation\n"
                         save_to_file.write(office_data)
                 if accomodation_status == "Y":
                     print colored("|PENDING LIVING SPACE ALLOCATION", "cyan")
-                    if file_name != "None":
+                    if file_name:
                         ls_data = "Pending Living Space Allocation"
                         save_to_file.write(ls_data)
                 print colored("-----------------------------------\n", "cyan")
@@ -204,7 +204,7 @@ class Amity(object):
                 print colored("|ROLE: STAFF", "cyan")
                 print colored("|PENDING OFFICE ALLOCATION", "cyan")
                 print colored("-----------------------------------", "cyan")
-                if file_name != "None":
+                if file_name:
                     staff_data = "\n\nName: {} {} \nRole: Staff \n Pending Office Allocation".format(
                         first_name, last_name)
                     save_to_file.write(staff_data)
@@ -259,7 +259,7 @@ class Amity(object):
                 if room.num_of_occupants < room.max_number:
                     office = room.room_name
                     full_name = first_name + " " + last_name
-                    first_name = Staff(full_name, role, office)
+                    first_name = Staff(full_name, office)
                     Amity.allocated_persons.append(first_name)
                     Amity.allocated_rooms.append(office)
                     Amity.staff.append(full_name)
@@ -285,7 +285,7 @@ class Amity(object):
                 if room.num_of_occupants < room.max_number:
                     office = room.room_name
                     full_name = first_name + " " + last_name
-                    first_name = Fellow(full_name, role, office, living_space)
+                    first_name = Fellow(full_name, office, living_space)
                     Amity.allocated_persons.append(first_name)
                     Amity.allocated_rooms.append(office)
                     Amity.fellows.append(full_name)
@@ -330,7 +330,7 @@ class Amity(object):
             for room in Amity.office_details:
                 if room.num_of_occupants < room.max_number:
                     office = room.room_name
-                    first_name = Fellow(full_name, role, office, living_space)
+                    first_name = Fellow(full_name, office, living_space)
                     Amity.allocated_persons.append(first_name)
                     Amity.allocated_rooms.append(office)
                     Amity.allocated_rooms.append(living_space)
@@ -345,7 +345,7 @@ class Amity(object):
                         full_name + " " + "FELLOW" + " " + "Y" + " " + "N")  # NEED WORK
                     print colored("ONLY LIVING SPACE AVAILABLE!! ADDED TO OFFICE WAITING LIST", "red")
                     print colored("----------------------------------------------------------", "red")
-                    first_name = Fellow(full_name, role, office, living_space)
+                    first_name = Fellow(full_name, office, living_space)
                     Amity.allocated_persons.append(first_name)
                     Amity.allocated_rooms.append(office)
                     Amity.allocated_rooms.append(living_space)
