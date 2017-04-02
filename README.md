@@ -64,7 +64,6 @@ Follow the following steps to succesfully _**install**_ the program:
 
 Tests on this project are done using python nose package. To run the tests enter the following command in your terminal in the amity directory.
 `nosetests --with-coverage` or `test.py`
-
 ## Authors
 
 * **Didacus Odhiambo** -- [Didacus Odhiambo](https://github.com/Andela-Didacus/amity)
