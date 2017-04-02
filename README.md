@@ -50,15 +50,14 @@ Follow the following steps to succesfully _**install**_ the program:
 
 7. `print_available_rooms` - prints a list of all the available rooms and available space
 
-8. `print_rooms - prints all the amity rooms and the number of occupants
-
+8. `print_rooms`- prints all the amity rooms and the number of occupants
 9. `print_room <room_name>` - Prints  the names and role of persons in the room.
 
 10. `save_state [--db=sqlite_database]` - Persists all the data stored in the app to a SQLite database. Specifying the --db parameter explicitly stores the data in the `sqlite_database` specified.
 
 11. `load_state [--db=sqlite_database]` - Loads data from a database into the application.
 
-12. exit` - quits the application
+12. `exit` - quits the application
 
 ## Running the tests
 
