@@ -48,9 +48,9 @@ Follow the following steps to succesfully _**install**_ the program:
 
 6. `print_allocations [--o=filename]`  - Prints a list of allocations onto the screen. Specifying the optional --o option here outputs the registered allocations to a txt file.
 
-7. print_available_rooms - prints a list of all the available rooms and available space
+7. `print_available_rooms` - prints a list of all the available rooms and available space
 
-8. print_rooms - prints all the amity rooms and the number of occupants
+8. `print_rooms - prints all the amity rooms and the number of occupants
 
 9. `print_room <room_name>` - Prints  the names and role of persons in the room.
 
@@ -58,7 +58,7 @@ Follow the following steps to succesfully _**install**_ the program:
 
 11. `load_state [--db=sqlite_database]` - Loads data from a database into the application.
 
-12. exit - quits the application
+12. exit` - quits the application
 
 ## Running the tests
 
@@ -67,7 +67,7 @@ Tests on this project are done using python nose package. To run the tests enter
 
 ## Authors
 
-* **Didacus Odhiambo** - ** - [Didacus Odhiambo](https://github.com/Andela-Didacus/amity)
+* **Didacus Odhiambo** -- [Didacus Odhiambo](https://github.com/Andela-Didacus/amity)
 
 
 
