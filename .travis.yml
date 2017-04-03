@@ -10,7 +10,7 @@ install:
 env:
   - DB=sqlite
 # command to run tests
-script: nosetests --with-coverage --cover-erase
+script: nosetests --with-coverage --cover-package=amity 
 
 after_success:
 - coveralls
