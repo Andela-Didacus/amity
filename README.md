@@ -1,6 +1,6 @@
 
 # **AMITY ROOM ALLOCATION SYSTEM**
-[![Build Status](https://travis-ci.org/Andela-Didacus/amity.svg?branch=master)](https://travis-ci.org/Andela-Didacus/amity) [![Code Health](https://landscape.io/github/Andela-Didacus/amity/master/landscape.svg?style=flat)](https://landscape.io/github/Andela-Didacus/amity/master)
+[![Build Status](https://travis-ci.org/Andela-Didacus/amity.svg?branch=master)](https://travis-ci.org/Andela-Didacus/amity) [![Code Health](https://landscape.io/github/Andela-Didacus/amity/master/landscape.svg?style=flat)](https://landscape.io/github/Andela-Didacus/amity/master) [![Coverage Status](https://coveralls.io/repos/github/Andela-Didacus/amity/badge.svg?branch=master)](https://coveralls.io/github/Andela-Didacus/amity?branch=master)
 
 The amity room allocation program is a room allocation system for one of Andela’s facilities called Amity. The main aim of the program being to easen the creating and allocation of rooms.
 The system allows the user to create rooms, allocate rooms, reallocate rooms, print allocations among other features.
