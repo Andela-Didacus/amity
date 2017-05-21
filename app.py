@@ -35,8 +35,8 @@ from termcolor import cprint
 from pyfiglet import figlet_format
 from docopt import docopt, DocoptExit
 
-from database import save_state, load_state, load_people
-from amity import Amity
+from amity.database import save_state, load_state, load_people
+from amity.amity import Amity
 
 
 def docopt_cmd(func):
