@@ -134,7 +134,7 @@ class Amity(object):
             print colored("--------------------------\n", "cyan")
         else:
             if file_name:
-                save_to_file = open("files/" + file_name, "w")
+                save_to_file = open("amity/files"+ file_name, "w")
             for person in Amity.allocated_persons:
                 print colored("-----------------------------------------", "cyan")
                 print colored("|STAFF NAME: %s" % person.full_name, "cyan")
@@ -175,7 +175,7 @@ class Amity(object):
             print colored("<== UNALLOCATED PERSONS IN AMITY ==>", "cyan")
             print colored("    ----------------------------    ", "cyan")
             if file_name:
-                save_to_file = open("files/" + file_name, "w")
+                save_to_file = open("amity/files" + file_name, "w")
             for person in Amity.unallocated_fellows:
                 first_name, last_name, role, office_status, accomodation_status = person.split(
                     " ")

@@ -72,7 +72,7 @@ def load_state(database_name):
 
 
 def load_people():
-    with open("people.txt") as f:
+    with open("amity/people.txt") as f:
         content = f.read().splitlines()
     for person in content:
         length = len(person.split(" "))
